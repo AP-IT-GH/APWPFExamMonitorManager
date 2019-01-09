@@ -40,8 +40,8 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal"   Background="{Binding StateAsColor}">
                                 <TextBlock Text="{Binding OrderName}"/>
-                                <Button Click="ButtonViewScreenShots_Click">Images</Button>
-                                <Button Name="btnCloseSession" Click="btnCloseSession_Click">Close Session</Button>
+                               
+                                <Button Name="btnCloseSession" Click="btnCloseSession_Click"  >Close Session</Button>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
