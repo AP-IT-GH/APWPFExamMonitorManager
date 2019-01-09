@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using WpfApp1.ImageLab;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace WpfApp1
 {
@@ -51,7 +52,7 @@ namespace WpfApp1
                 }
                 catch (Exception exc)
                 {
-                    MessageBox.Show(exc.Message);
+                await this.ShowMessageAsync("Error",exc.Message);
                 }
             
         }
@@ -73,13 +74,13 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
             }
 
         }
 
 
-        private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private async void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -89,7 +90,7 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
             }
 
         }
@@ -99,7 +100,7 @@ namespace WpfApp1
             try
             {
                 timerRefresh.Stop();
-                if (MessageBox.Show("Zeker dat je deze sessie wenst af te sluiten?", "Zeker?!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes)
+                if (await this.ShowMessageAsync("Opgelet","Zeker dat je deze sessie wenst af te sluiten?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                 {
                     //h
 
@@ -116,12 +117,12 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
             }
             timerRefresh.Start();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             timerRefresh.Stop();
             try
@@ -137,7 +138,7 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.","Error=" + ex.Message);
             }
             timerRefresh.Start();
 
@@ -152,7 +153,7 @@ namespace WpfApp1
                 return allsessions.OrderBy(p => p.OrderName);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -181,7 +182,7 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed."," Error=" + ex.Message);
             }
         }
 
@@ -200,7 +201,7 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                await this.ShowMessageAsync("Error",ex.Message);
 
             }
         }

@@ -15,9 +15,9 @@
         <Grid Grid.Row="0" Margin="10">
             <StackPanel  Orientation="Horizontal" Background="AliceBlue">
                 <TextBlock TextWrapping="Wrap" Text="Filter op lector:" />
-                <TextBox x:Name="txbLectorFilter" Controls:TextBoxHelper.Watermark="typ hier deel van de lectornaam"  TextWrapping="Wrap" Text="" MinWidth="100"  />
+                <TextBox x:Name="txbLectorFilter" Controls:TextBoxHelper.ClearTextButton="True"  Controls:TextBoxHelper.Watermark="typ hier deel van de lectornaam"  TextWrapping="Wrap" Text="" MinWidth="100"  />
                 <TextBlock Text="Zoek student:"  />
-                <TextBox x:Name="txbStudFulter" Controls:TextBoxHelper.Watermark="begin gewoon te typen" TextWrapping="Wrap" MinWidth="100"  />
+                <TextBox x:Name="txbStudFulter" Controls:TextBoxHelper.ClearTextButton="True"  Controls:TextBoxHelper.Watermark="begin gewoon te typen" TextWrapping="Wrap" MinWidth="100"  />
                 <Button Visibility="Hidden" x:Name="btnDebug" Content="Button"  Click="btnDebug_Click"/>
                 <Button x:Name="btnMissing" Visibility="Hidden" Content="Missing students?"  Click="btnMissing_Click"/>
             
