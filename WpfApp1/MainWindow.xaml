@@ -21,11 +21,13 @@
                 <TextBox x:Name="txbLectorFilter"  Controls:TextBoxHelper.ClearTextButton="True"  Controls:TextBoxHelper.Watermark="typ hier deel van de lectornaam"  TextWrapping="Wrap" Text="" MinWidth="100" TextChanged="txbLectorFilter_TextChanged"   />
                 <TextBlock Text="Zoek student:"  />
                 <TextBox x:Name="txbStudFulter" Controls:TextBoxHelper.ClearTextButton="True"  Controls:TextBoxHelper.Watermark="begin gewoon te typen" TextWrapping="Wrap" MinWidth="100"  />
+                <CheckBox Margin="50,0,0,0" Content="Vraag steeds bevestiging bij sessie afsluiten" IsChecked="True" Name="chkAskConfirm"></CheckBox>
                 <Button Visibility="Hidden" x:Name="btnDebug" Content="Button"  Click="btnDebug_Click"/>
                 <Button x:Name="btnMissing" Visibility="Hidden" Content="Missing students?"  Click="btnMissing_Click"/>
 
                 <!--<Canvas x:Name="cnvTimeMout" HorizontalAlignment="Left" Height="51" Margin="590,12,0,0" VerticalAlignment="Top" Width="59" Background="Red" Visibility="Hidden"/>-->
                 <Button Content="Magic button" Visibility="Hidden" Name="btnMagic"   Click="MagicButton_Click"/>
+                
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Margin="15">

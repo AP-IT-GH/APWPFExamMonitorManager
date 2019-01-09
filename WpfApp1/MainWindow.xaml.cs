@@ -41,20 +41,20 @@ namespace WpfApp1
 
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
-           
-                try
-                {
-                    RefreshData();
-                    
-                        timerRefresh.IsEnabled = true;
-                        timerRefresh.Start();
 
-                }
-                catch (Exception exc)
-                {
-                await this.ShowMessageAsync("Error",exc.Message);
-                }
-            
+            try
+            {
+                RefreshData();
+
+                timerRefresh.IsEnabled = true;
+                timerRefresh.Start();
+
+            }
+            catch (Exception exc)
+            {
+                await this.ShowMessageAsync("Error", exc.Message);
+            }
+
         }
 
         private async void ButtonViewScreenShots_Click(object sender, RoutedEventArgs e)
@@ -100,19 +100,18 @@ namespace WpfApp1
             try
             {
                 timerRefresh.Stop();
-                if (await this.ShowMessageAsync("Opgelet","Zeker dat je deze sessie wenst af te sluiten?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                if (chkAskConfirm.IsChecked == true)
                 {
-                    //h
+                    if (await this.ShowMessageAsync("Opgelet", "Zeker dat je deze sessie wenst af te sluiten?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    {
+                        await CloseSession(sender);
 
-                    ExamSession currses = (sender as Button).DataContext as ExamSession;
-
-                    WebClient wc = new WebClient();
-                    //
-                    wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-                    var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{currses.id}"));
-
+                    }
                 }
-                
+                else
+                {
+                    await CloseSession(sender);
+                }
             }
             catch (Exception ex)
             {
@@ -120,6 +119,16 @@ namespace WpfApp1
                 await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
             }
             timerRefresh.Start();
+        }
+
+        private async Task CloseSession(object sender)
+        {
+            ExamSession currses = (sender as Button).DataContext as ExamSession;
+
+            WebClient wc = new WebClient();
+            //
+            wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
+            var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{currses.id}"));
         }
 
         private async void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -138,7 +147,7 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.","Error=" + ex.Message);
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
             }
             timerRefresh.Start();
 
@@ -162,7 +171,7 @@ namespace WpfApp1
                 var time = DateTime.Now.Subtract(Properties.Settings.Default.cookieCreateTime);
                 if (time.Days == 0 && time.Hours == 0 && time.Minutes < 55)
                 {
-                   // MessageBox.Show("We can use the cookie again");
+                    // MessageBox.Show("We can use the cookie again");
                     currCookiesession = Properties.Settings.Default.cookieSessionValue;
                 }
                 else
@@ -182,7 +191,7 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed."," Error=" + ex.Message);
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", " Error=" + ex.Message);
             }
         }
 
@@ -196,12 +205,12 @@ namespace WpfApp1
                 allsessions = JsonConvert.DeserializeObject<List<ExamSession>>(res);
                 var filterd = FilterData();
                 lbSessions.ItemsSource = filterd;
-                Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tTimeRefresh={DateTime.Now.TimeOfDay}";
+                Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tLaatste update was om={DateTime.Now.TimeOfDay}";
                 CanvasAlert(filterd);
             }
             catch (Exception ex)
             {
-                await this.ShowMessageAsync("Error",ex.Message);
+                await this.ShowMessageAsync("Error", ex.Message);
 
             }
         }
@@ -251,13 +260,13 @@ namespace WpfApp1
 
         private async void lbSessions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(lbSessions.SelectedItem!=null)
+            if (lbSessions.SelectedItem != null)
             {
                 try
                 {
 
                     ExamSession currses = lbSessions.SelectedItem as ExamSession;
-                    txbCurrName.Text ="Student:"+ currses.student + " [Status:" + currses.status+"]";
+                    txbCurrName.Text = "Student:" + currses.student + " [Status:" + currses.status + "]";
                     WebClient wc = new WebClient();
                     //
                     wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
