@@ -1,0 +1,49 @@
+﻿<Window x:Class="GUI_Frontend_WPF.ImporteerHelperWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        Title="Importeer namenlijst" Height="300" Width="434" WindowStartupLocation="CenterOwner">
+
+    <Grid Background="#FFC40009">
+            <Grid Margin="5" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition> 
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <Button  Click="BtnBameFlexCvsImport_OnClick" Name="btnBameFlexCvsImport"  >
+                <TextBlock TextWrapping="Wrap" >Importeer van cvs-geëxporteerde bamaflex (punten/namen)-lijst [met kommapunt gescheiden. Eert achternaam; dan voornaam]</TextBlock>
+            </Button>
+            <Button  Click="BtnPlainTekstImport_OnClick" Name="btnPlainTekstImport"  Visibility="Hidden"  >
+                <TextBlock TextWrapping="Wrap"  >Importeer tekstbestand met namen onder mekaar</TextBlock>
+            </Button>
+           
+        </StackPanel>
+        <GroupBox Grid.Row="0" Grid.Column="1" Header="Missing?:">
+            <ListBox Name="lbPreview">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Background="{Binding MissingColor}">
+                                <TextBlock Text="{Binding Achternaam}"></TextBlock>
+                                <TextBlock Text="{Binding Voornaam}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" Name="btnOk" Click="BtnOk_OnClick" >OK</Button>
+            <Button Grid.Column="1" Name="btnCancel" Click="BtnCancel_OnClick">Cancel</Button>
+        </Grid>
+    </Grid>
+            </Grid>
+</Window>

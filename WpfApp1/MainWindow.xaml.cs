@@ -1,0 +1,213 @@
+﻿using GUI_Frontend_WPF;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+using WpfApp1.ImageLab;
+
+namespace WpfApp1
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+
+        private string currCookiesession = "";
+        DispatcherTimer timerRefresh = new DispatcherTimer();
+        public MainWindow()
+        {
+            InitializeComponent();
+
+        }
+
+
+        IEnumerable<ExamSession> allsessions;
+
+        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnDownload.Content as String != "Stop")
+            {
+                try
+                {
+                    RefreshData();
+                    if (chkRefresh.IsChecked == true)
+                    {
+                        timerRefresh.IsEnabled = true;
+                        timerRefresh.Start();
+
+                        btnDownload.Content = "Stop";
+                    }
+
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message);
+                }
+            }
+            else
+            {
+                btnDownload.Content = "Load Data";
+                timerRefresh.Stop();
+            }
+        }
+
+        private async void ButtonViewScreenShots_Click(object sender, RoutedEventArgs e)
+        {
+            ExamSession currses = (sender as Button).DataContext as ExamSession;
+            txbCurrName.Text = currses.student + " " + currses.status;
+            WebClient wc = new WebClient();
+            //
+            wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
+            var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currses.id}"));
+
+            var screendat = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
+
+            lbScreens.ItemsSource = screendat.Shots;
+        }
+
+     
+        private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var url = ((sender as Image).DataContext as Screenshot).Full;
+            imfull.Source = new BitmapImage(new Uri(url));
+        }
+
+        private async void btnCloseSession_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Zeker dat je deze sessie wenst af te sluiten?", "Zeker?!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes)
+            {
+                //h
+
+                ExamSession currses = (sender as Button).DataContext as ExamSession;
+
+                WebClient wc = new WebClient();
+                //
+                wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
+                var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{currses.id}"));
+
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            if (txbStudFulter.Text != "")
+                lbSessions.ItemsSource = FilterData().Where(p => p.student.ToLower().Contains(txbStudFulter.Text.ToLower()));
+            else
+            {
+                IEnumerable<ExamSession> f = FilterData();
+                lbSessions.ItemsSource = f;
+            }
+
+        }
+
+        private IEnumerable<ExamSession> FilterData()
+        {
+            if (txbLectorFilter.Text != "")
+                return allsessions.OrderBy(p => p.OrderName).Where(p => p.lector.ToLower().Contains(txbLectorFilter.Text.ToLower()) || p.exam.ToLower().Contains(txbLectorFilter.Text.ToLower()));
+
+            else
+                return allsessions.OrderBy(p => p.OrderName);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            txbStudFulter.TextChanged += TextBox_TextChanged;
+
+            var time = DateTime.Now.Subtract(Properties.Settings.Default.cookieCreateTime);
+            if (time.Days == 0 && time.Hours == 0 && time.Minutes < 55)
+            {
+                MessageBox.Show("We can use the cookie again");
+                currCookiesession = Properties.Settings.Default.cookieSessionValue;
+            }
+            else
+            {
+                LoginCaptureCookiewindows wnd = new LoginCaptureCookiewindows();
+                wnd.ShowDialog();
+                currCookiesession = Properties.Settings.Default.cookieSessionValue;
+            }
+
+            timerRefresh.IsEnabled = false;
+            timerRefresh.Interval = new TimeSpan(0, 0, 30);
+            timerRefresh.Tick += (p, ex) => { RefreshData(); };
+        }
+
+        private async void RefreshData()
+        {
+            try
+            {
+                WebClient wc = new WebClient();
+                wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
+                var res = await wc.DownloadStringTaskAsync(new Uri("http://examonitoring.ap.be/api/sessions/getActiveSessions"));
+                allsessions = JsonConvert.DeserializeObject<List<ExamSession>>(res);
+                var filterd = FilterData();
+                lbSessions.ItemsSource = filterd;
+                Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tTimeRefresh={DateTime.Now.TimeOfDay}";
+
+                CanvasAlert(filterd);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+        }
+
+        private void CanvasAlert(IEnumerable<ExamSession> filterd)
+        {
+            if (filterd.Count(p => p.status == "Time-out") > 0)
+                cnvTimeMout.Visibility = Visibility.Visible;
+            else cnvTimeMout.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnDebug_Click(object sender, RoutedEventArgs e)
+        {
+            LoginCaptureCookiewindows wnd = new LoginCaptureCookiewindows();
+            wnd.ShowDialog();
+        }
+
+        private void btnMissing_Click(object sender, RoutedEventArgs e)
+        {
+            ImporteerHelperWindow wnd = new ImporteerHelperWindow(lbSessions.ItemsSource as IEnumerable<ExamSession>);
+            wnd.ShowDialog();
+        }
+
+        private void imfull_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Window winimg = new Window();
+            Image g = new Image();
+            g.Source = imfull.Source;
+            winimg.Content = g;
+            winimg.WindowState = WindowState.Maximized;
+            winimg.WindowStyle = WindowStyle.SingleBorderWindow;
+
+            winimg.ShowDialog();
+        }
+
+
+
+        private async void MagicButton_Click(object sender, RoutedEventArgs e)
+        {
+            var screens = (lbScreens.ItemsSource as List<Screenshot>);
+            ImageLabWindow wc = new ImageLabWindow();
+            wc.Screens = screens;
+            wc.ShowDialog();
+
+
+        }
+    }
+}

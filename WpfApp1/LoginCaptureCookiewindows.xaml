@@ -1,0 +1,13 @@
+﻿<Window x:Class="WpfApp1.LoginCaptureCookiewindows"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="LoginCaptureCookiewindows" Height="824.829" Width="550.844" Loaded="Window_Loaded">
+    <Grid>
+        <WebBrowser Name="browser" Margin="0,34,0.286,0.429"></WebBrowser>
+        <Button Content="Klik op deze knop van zodra je correct hieronder bent ingelogd en je het dashboard ziet." HorizontalAlignment="Left" VerticalAlignment="Top" Width="535" Click="Button_Click" Height="29"/>
+    </Grid>
+</Window>
