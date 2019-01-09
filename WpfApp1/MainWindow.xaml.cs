@@ -67,51 +67,88 @@ namespace WpfApp1
 
         private async void ButtonViewScreenShots_Click(object sender, RoutedEventArgs e)
         {
-            ExamSession currses = (sender as Button).DataContext as ExamSession;
-            txbCurrName.Text = currses.student + " " + currses.status;
-            WebClient wc = new WebClient();
-            //
-            wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-            var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currses.id}"));
+            try
+            {
+                ExamSession currses = (sender as Button).DataContext as ExamSession;
+                txbCurrName.Text = currses.student + " " + currses.status;
+                WebClient wc = new WebClient();
+                //
+                wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
+                var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currses.id}"));
 
-            var screendat = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
+                var screendat = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
 
-            lbScreens.ItemsSource = screendat.Shots;
+                lbScreens.ItemsSource = screendat.Shots;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+            }
+
         }
 
-     
+
         private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var url = ((sender as Image).DataContext as Screenshot).Full;
-            imfull.Source = new BitmapImage(new Uri(url));
+            try
+            {
+                var url = ((sender as Image).DataContext as Screenshot).Full;
+                imfull.Source = new BitmapImage(new Uri(url));
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+            }
+
         }
 
         private async void btnCloseSession_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Zeker dat je deze sessie wenst af te sluiten?", "Zeker?!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes)
+            try
             {
-                //h
+                timerRefresh.Stop();
+                if (MessageBox.Show("Zeker dat je deze sessie wenst af te sluiten?", "Zeker?!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes)
+                {
+                    //h
 
-                ExamSession currses = (sender as Button).DataContext as ExamSession;
+                    ExamSession currses = (sender as Button).DataContext as ExamSession;
 
-                WebClient wc = new WebClient();
-                //
-                wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-                var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{currses.id}"));
+                    WebClient wc = new WebClient();
+                    //
+                    wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
+                    var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{currses.id}"));
 
+                }
+                
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+            }
+            timerRefresh.Start();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            if (txbStudFulter.Text != "")
-                lbSessions.ItemsSource = FilterData().Where(p => p.student.ToLower().Contains(txbStudFulter.Text.ToLower()));
-            else
+            timerRefresh.Stop();
+            try
             {
-                IEnumerable<ExamSession> f = FilterData();
-                lbSessions.ItemsSource = f;
+                if (txbStudFulter.Text != "")
+                    lbSessions.ItemsSource = FilterData().Where(p => p.student.ToLower().Contains(txbStudFulter.Text.ToLower()));
+                else
+                {
+                    IEnumerable<ExamSession> f = FilterData();
+                    lbSessions.ItemsSource = f;
+                }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+            }
+            timerRefresh.Start();
 
         }
 
@@ -126,24 +163,32 @@ namespace WpfApp1
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            txbStudFulter.TextChanged += TextBox_TextChanged;
-
-            var time = DateTime.Now.Subtract(Properties.Settings.Default.cookieCreateTime);
-            if (time.Days == 0 && time.Hours == 0 && time.Minutes < 55)
+            try
             {
-                MessageBox.Show("We can use the cookie again");
-                currCookiesession = Properties.Settings.Default.cookieSessionValue;
-            }
-            else
-            {
-                LoginCaptureCookiewindows wnd = new LoginCaptureCookiewindows();
-                wnd.ShowDialog();
-                currCookiesession = Properties.Settings.Default.cookieSessionValue;
-            }
+                txbStudFulter.TextChanged += TextBox_TextChanged;
 
-            timerRefresh.IsEnabled = false;
-            timerRefresh.Interval = new TimeSpan(0, 0, 30);
-            timerRefresh.Tick += (p, ex) => { RefreshData(); };
+                var time = DateTime.Now.Subtract(Properties.Settings.Default.cookieCreateTime);
+                if (time.Days == 0 && time.Hours == 0 && time.Minutes < 55)
+                {
+                   // MessageBox.Show("We can use the cookie again");
+                    currCookiesession = Properties.Settings.Default.cookieSessionValue;
+                }
+                else
+                {
+                    LoginCaptureCookiewindows wnd = new LoginCaptureCookiewindows();
+                    wnd.ShowDialog();
+                    currCookiesession = Properties.Settings.Default.cookieSessionValue;
+                }
+
+                timerRefresh.IsEnabled = false;
+                timerRefresh.Interval = new TimeSpan(0, 0, 30);
+                timerRefresh.Tick += (p, ex) => { RefreshData(); };
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("BAM.KAPOT. Niet goed. Error=" + ex.Message);
+            }
         }
 
         private async void RefreshData()
@@ -157,7 +202,7 @@ namespace WpfApp1
                 var filterd = FilterData();
                 lbSessions.ItemsSource = filterd;
                 Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tTimeRefresh={DateTime.Now.TimeOfDay}";
-
+                txbStatus.Text = Title;
                 CanvasAlert(filterd);
             }
             catch (Exception ex)
@@ -209,5 +254,7 @@ namespace WpfApp1
 
 
         }
+
+
     }
 }

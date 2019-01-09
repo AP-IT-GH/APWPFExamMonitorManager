@@ -7,7 +7,14 @@
         mc:Ignorable="d"
         Title="LoginCaptureCookiewindows" Height="824.829" Width="550.844" Loaded="Window_Loaded">
     <Grid>
-        <WebBrowser Name="browser" Margin="0,34,0.286,0.429"></WebBrowser>
-        <Button Content="Klik op deze knop van zodra je correct hieronder bent ingelogd en je het dashboard ziet." HorizontalAlignment="Left" VerticalAlignment="Top" Width="535" Click="Button_Click" Height="29"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <WebBrowser Grid.Row="1" Name="browser" Margin="0,34,0.286,0.429"></WebBrowser>
+        <Button Grid.Row="0" Background="Red"   HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" FontSize="24">
+            <TextBlock TextWrapping="Wrap" Text="!!!!Klik pas op deze knop van zodra je correct hieronder bent ingelogd en je het dashboard ziet."></TextBlock>
+        </Button>
+
     </Grid>
 </Window>

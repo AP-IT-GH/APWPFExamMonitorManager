@@ -12,16 +12,17 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Button x:Name="btnDownload" Content="Load data" HorizontalAlignment="Left" Height="52" Margin="466,12,0,0" VerticalAlignment="Top" Width="183" Click="DownloadButton_Click"/>
-            <TextBox x:Name="txbLectorFilter" HorizontalAlignment="Left" Height="23" Margin="288,48,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169"/>
-            <TextBlock HorizontalAlignment="Left" Margin="19,51,0,0" TextWrapping="Wrap" Text="Type lector (part) or exam name here to filter on:" VerticalAlignment="Top"/>
+            <Button x:Name="btnDownload" Content="Start" HorizontalAlignment="Left" Height="52" Margin="466,12,0,0" VerticalAlignment="Top" Width="183" Click="DownloadButton_Click"/>
+            <TextBox x:Name="txbLectorFilter" HorizontalAlignment="Left" Height="23" Margin="292,39,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169" />
+            <TextBlock HorizontalAlignment="Left" Margin="26,41,0,0" TextWrapping="Wrap" Text="Type lector (part) or exam name here to filter on:" VerticalAlignment="Top"/>
             <TextBox x:Name="txbStudFulter" HorizontalAlignment="Left" Height="57" Margin="760,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="249"/>
-            <Label Content="Zoek student" HorizontalAlignment="Left" Margin="674,25,0,0" VerticalAlignment="Top"/>
+            <Label Content="Zoek student:" HorizontalAlignment="Left" Margin="674,25,0,0" VerticalAlignment="Top"/>
             <Button Visibility="Hidden" x:Name="btnDebug" Content="Button" HorizontalAlignment="Left" Margin="1116,10,0,0" VerticalAlignment="Top" Width="75" Click="btnDebug_Click"/>
-            <Button x:Name="btnMissing" Content="Missing students?" HorizontalAlignment="Left" Margin="1076,25,0,0" VerticalAlignment="Top" Width="75" Click="btnMissing_Click"/>
-            <CheckBox x:Name="chkRefresh" Content="Refresh automatisch elke 30sec" HorizontalAlignment="Left" Margin="204,25,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="btnMissing" Visibility="Hidden" Content="Missing students?" HorizontalAlignment="Left" Margin="1076,25,0,0" VerticalAlignment="Top" Width="75" Click="btnMissing_Click"/>
+            <CheckBox x:Name="chkRefresh" Content="Refresh automatisch elke 30sec" HorizontalAlignment="Left" Margin="204,25,0,0" VerticalAlignment="Top" IsChecked="True" Visibility="Hidden"/>
             <Canvas x:Name="cnvTimeMout" HorizontalAlignment="Left" Height="51" Margin="590,12,0,0" VerticalAlignment="Top" Width="59" Background="Red" Visibility="Hidden"/>
-            <Button Content="Magic button" Name="btnMagic" HorizontalAlignment="Left" Margin="1425,12,0,0" VerticalAlignment="Top" Width="173" Height="40" Click="MagicButton_Click"/>
+            <Button Content="Magic button" Visibility="Hidden" Name="btnMagic" HorizontalAlignment="Left" Margin="1425,12,0,0" VerticalAlignment="Top" Width="173" Height="40" Click="MagicButton_Click"/>
+            <TextBlock Name="txbStatus" Text="Not running"  HorizontalAlignment="Left" Height="23" Margin="26,7,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="429" FontWeight="Bold" FontSize="20"/>
 
         </Grid>
         <Grid Grid.Row="1" Margin="15">
