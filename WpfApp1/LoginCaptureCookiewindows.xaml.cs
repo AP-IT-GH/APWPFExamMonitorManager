@@ -14,13 +14,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
 namespace WpfApp1
 {
     /// <summary>
     /// Interaction logic for LoginCaptureCookiewindows.xaml
     /// </summary>
-    public partial class LoginCaptureCookiewindows : Window
+    public partial class LoginCaptureCookiewindows : MetroWindow
     {
         public LoginCaptureCookiewindows()
         {

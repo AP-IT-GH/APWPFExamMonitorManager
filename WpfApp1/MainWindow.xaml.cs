@@ -176,7 +176,9 @@ namespace WpfApp1
                 else
                 {
                     LoginCaptureCookiewindows wnd = new LoginCaptureCookiewindows();
+                    this.Visibility = Visibility.Hidden;
                     wnd.ShowDialog();
+                    this.Visibility = Visibility.Visible;
                     currCookiesession = Properties.Settings.Default.cookieSessionValue;
                 }
 
