@@ -249,6 +249,29 @@ namespace WpfApp1
 
         }
 
+        private async void lbSessions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(lbSessions.SelectedItem!=null)
+            {
+                try
+                {
 
+                    ExamSession currses = lbSessions.SelectedItem as ExamSession;
+                    txbCurrName.Text = currses.student + " " + currses.status;
+                    WebClient wc = new WebClient();
+                    //
+                    wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
+                    var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currses.id}"));
+
+                    var screendat = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
+
+                    lbScreens.ItemsSource = screendat.Shots;
+                }
+                catch (Exception ex)
+                {
+                    await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
+                }
+            }
+        }
     }
 }

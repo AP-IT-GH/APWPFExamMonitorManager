@@ -26,7 +26,7 @@ namespace WpfApp1
                 switch (status)
                 {
                     case "Actief": return "Green";
-                    case "Time-out": return "Purple";
+                    case "Time-out": return "Orange";
                 }
                 return "White";
             }

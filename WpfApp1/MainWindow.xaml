@@ -35,7 +35,7 @@
 
             </Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Grid.Column="0">
-                <ListBox Name="lbSessions"  >
+                <ListBox Name="lbSessions" SelectionChanged="lbSessions_SelectionChanged"   >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal"   Background="{Binding StateAsColor}">
