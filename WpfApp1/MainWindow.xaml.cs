@@ -17,13 +17,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using WpfApp1.ImageLab;
+using MahApps.Metro.Controls;
 
 namespace WpfApp1
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
 
         private string currCookiesession = "";
@@ -39,30 +40,20 @@ namespace WpfApp1
 
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
-            if (btnDownload.Content as String != "Stop")
-            {
+           
                 try
                 {
                     RefreshData();
-                    if (chkRefresh.IsChecked == true)
-                    {
+                    
                         timerRefresh.IsEnabled = true;
                         timerRefresh.Start();
-
-                        btnDownload.Content = "Stop";
-                    }
 
                 }
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message);
                 }
-            }
-            else
-            {
-                btnDownload.Content = "Load Data";
-                timerRefresh.Stop();
-            }
+            
         }
 
         private async void ButtonViewScreenShots_Click(object sender, RoutedEventArgs e)
@@ -185,6 +176,7 @@ namespace WpfApp1
                 timerRefresh.IsEnabled = false;
                 timerRefresh.Interval = new TimeSpan(0, 0, 30);
                 timerRefresh.Tick += (p, ex) => { RefreshData(); };
+                DownloadButton_Click(this, null);
             }
             catch (Exception ex)
             {
@@ -204,7 +196,6 @@ namespace WpfApp1
                 var filterd = FilterData();
                 lbSessions.ItemsSource = filterd;
                 Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tTimeRefresh={DateTime.Now.TimeOfDay}";
-                txbStatus.Text = Title;
                 CanvasAlert(filterd);
             }
             catch (Exception ex)
@@ -216,9 +207,9 @@ namespace WpfApp1
 
         private void CanvasAlert(IEnumerable<ExamSession> filterd)
         {
-            if (filterd.Count(p => p.status == "Time-out") > 0)
-                cnvTimeMout.Visibility = Visibility.Visible;
-            else cnvTimeMout.Visibility = Visibility.Collapsed;
+            //if (filterd.Count(p => p.status == "Time-out") > 0)
+            //    cnvTimeMout.Visibility = Visibility.Visible;
+            //else cnvTimeMout.Visibility = Visibility.Collapsed;
         }
 
         private void btnDebug_Click(object sender, RoutedEventArgs e)
