@@ -257,7 +257,7 @@ namespace WpfApp1
                 {
 
                     ExamSession currses = lbSessions.SelectedItem as ExamSession;
-                    txbCurrName.Text = currses.student + " " + currses.status;
+                    txbCurrName.Text ="Student:"+ currses.student + " [Status:" + currses.status+"]";
                     WebClient wc = new WebClient();
                     //
                     wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
@@ -272,6 +272,27 @@ namespace WpfApp1
                     await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
                 }
             }
+        }
+
+        private async void txbLectorFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            timerRefresh.Stop();
+            try
+            {
+                if (txbStudFulter.Text != "")
+                    lbSessions.ItemsSource = FilterData().OrderBy(p => p.OrderName).Where(p => p.lector.ToLower().Contains(txbLectorFilter.Text.ToLower()) || p.exam.ToLower().Contains(txbLectorFilter.Text.ToLower()));
+                else
+                {
+                    IEnumerable<ExamSession> f = FilterData();
+                    lbSessions.ItemsSource = f;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
+            }
+            timerRefresh.Start();
         }
     }
 }
