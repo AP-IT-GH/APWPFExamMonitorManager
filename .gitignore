@@ -50,3 +50,6 @@ StyleCop.*
 
 #Build output
 build-output/
+
+# publish
+!publish/
