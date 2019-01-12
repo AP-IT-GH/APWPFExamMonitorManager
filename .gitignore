@@ -53,3 +53,4 @@ build-output/
 
 # publish
 !publish/
+!WpfApp1\publish\setup.exe
