@@ -62,7 +62,7 @@ namespace WpfApp1
             try
             {
                 ExamSession currses = (sender as Button).DataContext as ExamSession;
-                txbCurrName.Text = currses.student + " " + currses.status;
+                //TODO:txbCurrName.Text = currses.student + " " + currses.status;
                 WebClient wc = new WebClient();
                 //
                 wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
@@ -85,7 +85,7 @@ namespace WpfApp1
             try
             {
                 var url = ((sender as Image).DataContext as Screenshot).Full;
-                imfull.Source = new BitmapImage(new Uri(url));
+                //TODO:imfull.Source = new BitmapImage(new Uri(url));
             }
             catch (Exception ex)
             {
@@ -238,7 +238,7 @@ namespace WpfApp1
         {
             Window winimg = new Window();
             Image g = new Image();
-            g.Source = imfull.Source;
+           //TODO: g.Source = imfull.Source;
             winimg.Content = g;
             winimg.WindowState = WindowState.Maximized;
             winimg.WindowStyle = WindowStyle.SingleBorderWindow;
@@ -266,7 +266,7 @@ namespace WpfApp1
                 {
 
                     ExamSession currses = lbSessions.SelectedItem as ExamSession;
-                    txbCurrName.Text = "Student:" + currses.student + " [Status:" + currses.status + "]";
+                    //TODO:txbCurrName.Text = "Student:" + currses.student + " [Status:" + currses.status + "]";
                     WebClient wc = new WebClient();
                     //
                     wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");

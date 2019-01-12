@@ -36,7 +36,7 @@
                 <ColumnDefinition Width="2.5*"/>
 
 
-                <ColumnDefinition Width="4*"/>
+                <!--<ColumnDefinition Width="4*"/>-->
 
             </Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Grid.Column="0">
@@ -62,30 +62,30 @@
 
 
 
-            <ScrollViewer  Grid.Column="1" >
-                <ListView Name="lbScreens">
-                    <ListView.ItemsPanel>
+            
+                <ListBox Name="lbScreens" Grid.Column="1"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel MaxWidth="500"/>
+                            <WrapPanel Orientation="Horizontal"/>
 
                         </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                    </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Thumb}" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+                            <Image Source="{Binding Thumb}" MaxWidth="150" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
 
-                </ListView>
-            </ScrollViewer>
-            <Grid Grid.Column="3">
+                </ListBox>
+            
+            <!--<Grid Grid.Column="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBlock Name="txbCurrName" FontSize="20"></TextBlock>
                 <Image Name="imfull"  Grid.Row="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="imfull_MouseLeftButtonUp"/>
-            </Grid>
+            </Grid>-->
         </Grid>
     </Grid>
 </Controls:MetroWindow>

@@ -108,6 +108,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FullImgWindow.xaml.cs">
+      <DependentUpon>FullImgWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageLab\ImageLabWindow.xaml.cs">
       <DependentUpon>ImageLabWindow.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
     </Compile>
     <Compile Include="ScreenshotData.cs" />
     <Compile Include="Student.cs" />
+    <Page Include="FullImgWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImageLab\ImageLabWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
