@@ -224,19 +224,6 @@ namespace WpfApp1
             wnd.ShowDialog();
         }
 
-        private void imfull_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Window winimg = new Window();
-            Image g = new Image();
-           //TODO: g.Source = imfull.Source;
-            winimg.Content = g;
-            winimg.WindowState = WindowState.Maximized;
-            winimg.WindowStyle = WindowStyle.SingleBorderWindow;
-
-            winimg.ShowDialog();
-        }
-
-
 
         private async void MagicButton_Click(object sender, RoutedEventArgs e)
         {
@@ -292,6 +279,24 @@ namespace WpfApp1
                 await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
             }
             timerRefresh.Start();
+        }
+
+        private async void btnInfo_Click(object sender, RoutedEventArgs e)
+        {
+
+            string url= "https://github.com/AP-Elektronica-ICT/APWPFExamMonitorManager";
+            string version = "debug/onbekend";
+            try
+            {
+                version = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            }
+            catch
+            {
+                //ifgnore
+            }
+             
+            string fulltekst = $"Versie:{version}.\r\nDit programma is geschreven door Tim Dams, AP Hogeschool Antwerpen (2019).\r\n Contacteer me bij vragen of opmerkingen. \r\n\r\nDe volledige broncode van dit programma kan op github bekeken worden: {url}";
+            await this.ShowMessageAsync("Over dit programma", fulltekst);
         }
     }
 }

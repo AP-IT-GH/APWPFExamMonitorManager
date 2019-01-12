@@ -28,6 +28,7 @@
                 <!--<Canvas x:Name="cnvTimeMout" HorizontalAlignment="Left" Height="51" Margin="590,12,0,0" VerticalAlignment="Top" Width="59" Background="Red" Visibility="Hidden"/>-->
                 <Button Content="Magic button" Visibility="Hidden" Name="btnMagic"   Click="MagicButton_Click"/>
                 <Button Name="btnCloseAllMyExams" IsEnabled="False" Content="Sluit al mijn sessies (weldra actief)"/>
+                <Button Name="btnInfo" Click="btnInfo_Click" IsEnabled="True" Content="Info"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Margin="15">

@@ -27,12 +27,15 @@
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://raw.githubusercontent.com/AP-Elektronica-ICT/APWPFExamMonitorManager/master/WpfApp1/publish/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/AP-Elektronica-ICT/APWPFExamMonitorManager/master/WpfApp1/publish/</UpdateUrl>
+    <SupportUrl>https://github.com/AP-Elektronica-ICT/APWPFExamMonitorManager/issues</SupportUrl>
+    <TargetCulture>nl-BE</TargetCulture>
     <ProductName>AP Exam Monitor Manager</ProductName>
     <PublisherName>Tim Dams</PublisherName>
     <SuiteName>AP Exam Monitor Manager</SuiteName>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -71,9 +74,6 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
-      <HintPath>..\packages\ControlzEx.4.0.0-alpha0218\lib\net45\ControlzEx.dll</HintPath>
-    </Reference>
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.0.0-alpha0186\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -92,6 +92,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -196,6 +197,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="mainicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="ControlzEx">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
