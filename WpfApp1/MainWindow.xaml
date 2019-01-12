@@ -72,7 +72,7 @@
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Thumb}" MaxWidth="150" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+                            <Image Source="{Binding Thumb}" MaxWidth="200" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
 

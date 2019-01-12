@@ -7,8 +7,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="FullImgWindow" Height="300" Width="300">
-    <Grid>
-        
+        Title="Full image viewer" Height="800" MouseLeftButtonUp="Grid_MouseLeftButtonUp" Width="800" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Grid MouseLeftButtonUp="Grid_MouseLeftButtonUp">
+        <Image Name="srcImage"></Image>
     </Grid>
 </Controls:MetroWindow>

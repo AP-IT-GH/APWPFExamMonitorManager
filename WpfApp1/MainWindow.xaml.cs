@@ -85,7 +85,9 @@ namespace WpfApp1
             try
             {
                 var url = ((sender as Image).DataContext as Screenshot).Full;
-                //TODO:imfull.Source = new BitmapImage(new Uri(url));
+                FullImgWindow wnd = new FullImgWindow();
+                wnd.srcImage.Source = new BitmapImage(new Uri(url));
+                wnd.ShowDialog();
             }
             catch (Exception ex)
             {
