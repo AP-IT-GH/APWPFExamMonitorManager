@@ -1,24 +1,19 @@
 ﻿using GUI_Frontend_WPF;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using WpfApp1.ImageLab;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace WpfApp1
 {
@@ -57,27 +52,7 @@ namespace WpfApp1
 
         }
 
-        private async void ButtonViewScreenShots_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ExamSession currses = (sender as Button).DataContext as ExamSession;
-                //TODO:txbCurrName.Text = currses.student + " " + currses.status;
-                WebClient wc = new WebClient();
-                //
-                wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-                var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currses.id}"));
 
-                var screendat = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
-
-                lbScreens.ItemsSource = screendat.Shots;
-            }
-            catch (Exception ex)
-            {
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
-            }
-
-        }
 
 
         private async void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -125,12 +100,25 @@ namespace WpfApp1
 
         private async Task CloseSession(object sender)
         {
-            ExamSession currses = (sender as Button).DataContext as ExamSession;
+            try
+            {
+                ExamSession currses = (sender as Button).DataContext as ExamSession;
 
-            WebClient wc = new WebClient();
+                WebClient wc = new WebClient();
+                wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
+                var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{currses.id}"));
+                ((sender as Button).Parent as StackPanel).IsEnabled = false;
+                ((sender as Button).Parent as StackPanel).Background = new SolidColorBrush(Colors.DarkGray);
+                lbSessions.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Sessie close failed. Error=" + ex.Message);
+            }
+            
             //
-            wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-            var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{currses.id}"));
+          
         }
 
         private async void TextBox_TextChanged(object sender, TextChangedEventArgs e)
