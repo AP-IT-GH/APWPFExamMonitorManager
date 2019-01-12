@@ -1,0 +1,1 @@
+https://developers.de/2018/02/10/clickonce-on-github/
