@@ -64,7 +64,7 @@
 
 
                                         <TextBlock Text="{Binding OrderName}"/>
-                                        <TextBlock Text="{Binding ExtraInfo}" FontStyle="Italic" FontSize="8"  />
+                                        <TextBlock Text="{Binding ExtraInfo}"  FontSize="10"  />
 
 
 
@@ -94,8 +94,18 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <iconPacks:PackIconMaterial Kind="ProgressDownload" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <Image Source="{Binding Path=Thumb}" MaxWidth="300" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock HorizontalAlignment="Right" Text="{Binding ShortTime}" FontSize="10"></TextBlock>
+                            <Grid Grid.Row="1" Background="LightBlue">
+                                <iconPacks:PackIconMaterial Kind="ProgressDownload" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <Image Source="{Binding Path=Thumb}" MaxWidth="300" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+
+
+                            </Grid>
+                             
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

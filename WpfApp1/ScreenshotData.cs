@@ -14,6 +14,14 @@ namespace WpfApp1
         public int ID { get; set; }
         public DateTime TimeTaken { get; set; }
 
+        public string ShortTime
+        {
+            get
+            {
+                return TimeTaken.ToString("HH:mm");
+            }
+        }
+
     }
     public class ScreenshotSessionData
     {
