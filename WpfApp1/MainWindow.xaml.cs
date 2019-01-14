@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using WpfApp1.ImageLab;
+using WpfApp1.Tools;
 
 namespace WpfApp1
 {
@@ -42,7 +43,7 @@ namespace WpfApp1
                 timerRefresh.Stop();
                 DownloadActiveSessions();
 
-                
+
                 timerRefresh.Start();
 
             }
@@ -78,16 +79,21 @@ namespace WpfApp1
             try
             {
                 timerRefresh.Stop();
+
                 if (chkAskConfirm.IsChecked == true)
                 {
                     if (await this.ShowMessageAsync("Opgelet", "Zeker dat je deze sessie wenst af te sluiten?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
+                        lbSessions.SelectedIndex = -1;
+                        lbScreens.ItemsSource = null;
                         await CloseSession(sender);
 
                     }
                 }
                 else
                 {
+                    lbSessions.SelectedIndex = -1;
+                    lbScreens.ItemsSource = null;
                     await CloseSession(sender);
                 }
             }
@@ -108,7 +114,8 @@ namespace WpfApp1
 
                 WebClient wc = new WebClient();
                 wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-                var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{currses.id}"));
+
+                RestClient.CloseSession(currses.id);
                 ((sender as Button).Parent as StackPanel).IsEnabled = false;
                 ((sender as Button).Parent as StackPanel).Background = new SolidColorBrush(Colors.DarkGray);
                 lbSessions.SelectedIndex = -1;
@@ -150,20 +157,31 @@ namespace WpfApp1
             {
                 txbStudFulter.TextChanged += TextBox_TextChanged;
 
-                var time = DateTime.Now.Subtract(Properties.Settings.Default.cookieCreateTime);
-                if (time.Days == 0 && time.Hours == 0 && time.Minutes < 55)
+                //var time = DateTime.Now.Subtract(Properties.Settings.Default.cookieCreateTime);
+                //if (time.Days == 0 && time.Hours == 0 && time.Minutes < 55)
+                //{
+                //    // MessageBox.Show("We can use the cookie again");
+                //    // currCookiesession = Properties.Settings.Default.cookieSessionValue;
+                //}
+                //else
+                //{
+                //Eerst login proberen met bestaande gegevens
+                if (Properties.Settings.Default.SafePW == true)
                 {
-                    // MessageBox.Show("We can use the cookie again");
-                   // currCookiesession = Properties.Settings.Default.cookieSessionValue;
+                    string user = Properties.Settings.Default.UserName;
+                    string pass = SecurePasswordVault.ToInsecureString(SecurePasswordVault.DecryptString(Properties.Settings.Default.Password));
+                    var gotit = await RestClient.LoginAndGetSession(user, pass);
+                    if(gotit!=true) //Login vereist
+                    {
+                        LoadLoginAndQuitIfNeeded();
+                    }
+
                 }
-                else
+                else //Login vereist
                 {
-                    LoginCaptureCookiewindows wnd = new LoginCaptureCookiewindows();
-                    this.Visibility = Visibility.Hidden;
-                    wnd.ShowDialog();
-                    this.Visibility = Visibility.Visible;
-                   // currCookiesession = Properties.Settings.Default.cookieSessionValue;
+                    LoadLoginAndQuitIfNeeded();
                 }
+
 
 
                 timerRefresh.Interval = new TimeSpan(0, 0, 15);
@@ -184,7 +202,7 @@ namespace WpfApp1
             {
                 WebClient wc = new WebClient();
                 wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-                var res = await wc.DownloadStringTaskAsync(new Uri("http://examonitoring.ap.be/api/sessions/getActiveSessions"));
+                var res = await RestClient.GetActiveSessions();
                 allsessions = JsonConvert.DeserializeObject<List<ExamSession>>(res);
                 var filterd = FilterData();
                 lbSessions.ItemsSource = filterd;
@@ -193,7 +211,7 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-                await this.ShowMessageAsync("Error", ex.Message);
+              //  await this.ShowMessageAsync("Error", ex.Message);
 
             }
         }
@@ -282,6 +300,23 @@ namespace WpfApp1
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             RefreshDataFromServer();
+        }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.SafePW = false;
+            Properties.Settings.Default.Save();
+            timerRefresh.Stop();
+            LoadLoginAndQuitIfNeeded();
+        }
+
+        private void LoadLoginAndQuitIfNeeded()
+        {
+            LoginCaptureCookiewindows wnd = new LoginCaptureCookiewindows();
+            this.Visibility = Visibility.Hidden;
+            if (wnd.ShowDialog() == false)
+                System.Windows.Application.Current.Shutdown();
+            this.Visibility = Visibility.Visible;
         }
     }
 }

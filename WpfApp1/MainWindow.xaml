@@ -29,6 +29,7 @@
 
                 <Button Name="btnCloseAllMyExams" IsEnabled="False" Content="Sluit al mijn sessies (weldra actief)"/>
                 <Button Name="btnInfo" Click="btnInfo_Click" IsEnabled="True" Content="Info"/>
+                <Button Name="btnLogout" Content="Log out" Click="btnLogout_Click" ></Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Margin="15">

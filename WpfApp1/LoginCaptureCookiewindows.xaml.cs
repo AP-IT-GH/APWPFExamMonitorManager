@@ -69,8 +69,8 @@ namespace WpfApp1
             bool result = await RestClient.LoginAndGetSession(txbUser.Text, txbPass.Password);
             if (result == true)
             {
-                MessageBox.Show("Gelukt");
-                //close en return client?
+                this.DialogResult = true;
+                this.Close();
             }
             else
             {
@@ -88,6 +88,15 @@ namespace WpfApp1
                 txbUser.Text = Properties.Settings.Default.UserName;
                 txbPass.Password = SecurePasswordVault.ToInsecureString(SecurePasswordVault.DecryptString(Properties.Settings.Default.Password));
 
+            }
+        }
+
+
+        private void closeEvent(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (this.DialogResult == null)
+            {
+                this.DialogResult = false;
             }
         }
     }

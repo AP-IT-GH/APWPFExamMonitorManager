@@ -13,7 +13,7 @@ namespace WpfApp1.Tools
         public static HttpClient Client;
         private static  string mainusername = "";
         private static string mainpassword = "";
-
+        private static bool IAMIN = false;
 
         public static async void ReLogin()
         {
@@ -43,28 +43,38 @@ namespace WpfApp1.Tools
             }
             else
             {
-                bool gotcookie = await TrySetSessionCookie(response);
+                IAMIN = await TrySetSessionCookie(response);
                 mainusername = username;
                 mainpassword = pass;
-                return gotcookie;
+                return IAMIN;
             }
 
         }
 
-        public static async Task GetActiveSessions()
+        public static async Task<string> GetActiveSessions()
         {
             var authc = await Client.GetStringAsync("http://examonitoring.ap.be/api/users/authCheck");
             if (authc.Contains("true"))
 
             {
                 var res3 = await Client.GetStringAsync(new Uri("http://examonitoring.ap.be/api/sessions/getActiveSessions"));
+                return res3;
                 MessageBox.Show(res3);
             }
             else
             {
                 //Retry login
                 ReLogin();
+                var res3 = await Client.GetStringAsync(new Uri("http://examonitoring.ap.be/api/sessions/getActiveSessions"));
+                return res3;
             }
+        }
+
+        public static async Task CloseSession(string id)
+        {
+            
+
+            var res = await Client.GetStringAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{id}"));
         }
 
         public static async Task<bool> TrySetSessionCookie(HttpResponseMessage response)
