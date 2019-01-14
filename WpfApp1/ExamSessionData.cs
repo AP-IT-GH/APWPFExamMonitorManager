@@ -47,6 +47,15 @@ namespace WpfApp1
                 return just;
             }
         }
+
+        public string ExtraInfo
+        {
+            get
+            {
+                return $"[Lector:{lector}, Examen:{exam}, Starttijd:{starttime}]";
+            }
+        }
+
     }
 
 }

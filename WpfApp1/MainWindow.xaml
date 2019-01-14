@@ -26,7 +26,7 @@
                 <Button x:Name="btnMissing" Visibility="Hidden" Content="Missing students?"  Click="btnMissing_Click"/>
 
                 <!--<Canvas x:Name="cnvTimeMout" HorizontalAlignment="Left" Height="51" Margin="590,12,0,0" VerticalAlignment="Top" Width="59" Background="Red" Visibility="Hidden"/>-->
-                <Button Content="Magic button" Visibility="Hidden" Name="btnMagic"   Click="MagicButton_Click"/>
+
                 <Button Name="btnCloseAllMyExams" IsEnabled="False" Content="Sluit al mijn sessies (weldra actief)"/>
                 <Button Name="btnInfo" Click="btnInfo_Click" IsEnabled="True" Content="Info"/>
             </StackPanel>
@@ -49,22 +49,32 @@
                     <CheckBox Name="chkOnlyTimeOuts" Content="Toon enkel timeouts" Margin="5" Checked="chkOnlyTimeOuts_Checked" Unchecked="chkOnlyTimeOuts_Checked" ></CheckBox>
                 </StackPanel>
                 <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Grid.Row="1">
-                <ListBox Name="lbSessions" SelectionChanged="lbSessions_SelectionChanged"   >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal"   Background="{Binding StateAsColor}">
-
-                                <Button HorizontalAlignment="Right" Name="btnCloseSession" Click="btnCloseSession_Click" 
+                    <ListBox Name="lbSessions" SelectionChanged="lbSessions_SelectionChanged"   >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="{Binding StateAsColor}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0" HorizontalAlignment="Left" Margin="2" Name="btnCloseSession" Click="btnCloseSession_Click" 
                                         Content="{iconPacks:Modern Kind=Close}"/>
-                                <TextBlock Text="{Binding OrderName}"/>
+                                    <StackPanel Grid.Column="1" Orientation="Vertical"  >
+
+
+                                        <TextBlock Text="{Binding OrderName}"/>
+                                        <TextBlock Text="{Binding ExtraInfo}" FontStyle="Italic" FontSize="8"  />
 
 
 
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </ScrollViewer>
+
+
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
             </Grid>
             <ListBox Name="lbScreens" Grid.Column="1"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"
                       VirtualizingPanel.IsContainerVirtualizable="True"

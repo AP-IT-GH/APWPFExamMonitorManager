@@ -34,15 +34,15 @@ namespace WpfApp1
 
         IEnumerable<ExamSession> allsessions;
 
-        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
+        private async void RefreshDataFromServer()
         {
             //Todo: button bestaat niet meer. wordt nu gewoon bij onloaded gestart
             try
             {
                 timerRefresh.Stop();
-                RefreshData();
+                DownloadActiveSessions();
 
-                timerRefresh.IsEnabled = true;
+                
                 timerRefresh.Start();
 
             }
@@ -96,6 +96,7 @@ namespace WpfApp1
 
                 await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
             }
+            RefreshDataFromServer();
             timerRefresh.Start();
         }
 
@@ -166,8 +167,9 @@ namespace WpfApp1
 
 
                 timerRefresh.Interval = new TimeSpan(0, 0, 15);
-                timerRefresh.Tick += (p, ex) => { RefreshData(); };
-                DownloadButton_Click(this, null);
+                timerRefresh.Tick += (p, ex) => { DownloadActiveSessions(); };
+                timerRefresh.IsEnabled = true;
+                RefreshDataFromServer();
             }
             catch (Exception ex)
             {
@@ -176,7 +178,7 @@ namespace WpfApp1
             }
         }
 
-        private async void RefreshData()
+        private async void DownloadActiveSessions()
         {
             try
             {
@@ -186,7 +188,7 @@ namespace WpfApp1
                 allsessions = JsonConvert.DeserializeObject<List<ExamSession>>(res);
                 var filterd = FilterData();
                 lbSessions.ItemsSource = filterd;
-                Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tLaatste update was om={DateTime.Now.TimeOfDay}";
+                Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tLaatste update was om={DateTime.Now.ToString("HH:mm:ss")}";
 
             }
             catch (Exception ex)
@@ -208,17 +210,6 @@ namespace WpfApp1
         {
             ImporteerHelperWindow wnd = new ImporteerHelperWindow(lbSessions.ItemsSource as IEnumerable<ExamSession>);
             wnd.ShowDialog();
-        }
-
-
-        private async void MagicButton_Click(object sender, RoutedEventArgs e)
-        {
-            var screens = (lbScreens.ItemsSource as List<Screenshot>);
-            ImageLabWindow wc = new ImageLabWindow();
-            wc.Screens = screens;
-            wc.ShowDialog();
-
-
         }
 
         private async void lbSessions_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -290,7 +281,7 @@ namespace WpfApp1
 
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            DownloadButton_Click(this, null);
+            RefreshDataFromServer();
         }
     }
 }
