@@ -19,11 +19,20 @@ namespace WpfApp1
     /// </summary>
     public partial class FullImgWindow : MahApps.Metro.Controls.MetroWindow
     {
-        public ScreenshotSessionData AllScreens { get; set; }
+        private ScreenshotSessionData allScreens;
+        private ExamSession currentSession;
+
         public int currentImage = -1;
-        public FullImgWindow()
+        //public FullImgWindow()
+        //{
+        //    InitializeComponent();
+        //}
+
+        public FullImgWindow(ScreenshotSessionData allscreenin, ExamSession currentSessionin)
         {
             InitializeComponent();
+            allScreens = allscreenin;
+            currentSession = currentSessionin;
         }
 
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -34,7 +43,8 @@ namespace WpfApp1
         private void btnPreviousScreen_Click(object sender, RoutedEventArgs e)
         {
             currentImage--;
-            srcImage.Source = new BitmapImage(new Uri(AllScreens.Shots[currentImage].Full));
+            srcImage.Source = new BitmapImage(new Uri(allScreens.Shots[currentImage].Full));
+            ShowInfo();
             if (currentImage>0)
             {
               
@@ -49,8 +59,9 @@ namespace WpfApp1
         private void btnNextScreen_Click(object sender, RoutedEventArgs e)
         {
             currentImage++;
-            srcImage.Source = new BitmapImage(new Uri(AllScreens.Shots[currentImage].Full));
-            if (currentImage < AllScreens.Shots.Count-1 )
+            srcImage.Source = new BitmapImage(new Uri(allScreens.Shots[currentImage].Full));
+            ShowInfo();
+            if (currentImage < allScreens.Shots.Count-1 )
             {
                
                 btnPreviousScreen.IsEnabled = true;
@@ -59,6 +70,7 @@ namespace WpfApp1
             {
                 btnNextScreen.IsEnabled = false;
             }
+
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -67,10 +79,19 @@ namespace WpfApp1
             {
                 btnPreviousScreen.IsEnabled = false;
             }
-            if(currentImage== AllScreens.Shots.Count-1)
+            if(currentImage== allScreens.Shots.Count-1)
             {
                 btnNextScreen.IsEnabled = false;
             }
+
+            ShowInfo();
         }
+        
+        private void ShowInfo()
+        {
+            txbInfo.Text = $"Gebruiker: {allScreens.user.lastname} {allScreens.user.firstname}. Screenshot genomen om: {allScreens.Shots[currentImage].TimeTaken}";
+        }
+
+     
     }
 }

@@ -10,7 +10,9 @@
         Title="Full image viewer (click image to close)" Height="800" MouseLeftButtonUp="Grid_MouseLeftButtonUp" Width="800" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None" WindowState="Maximized" Loaded="MetroWindow_Loaded" >
     <Grid MouseLeftButtonUp="Grid_MouseLeftButtonUp">
         <Grid.RowDefinitions>
+           
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Text="Loading" HorizontalAlignment="Center" FontSize="36" Margin="150" />
@@ -21,5 +23,6 @@
             <Button Margin="10" Height="50" Width="100" Name="btnPreviousScreen" Click="btnPreviousScreen_Click"  Content="{iconPacks:Modern Kind=ArrowLeft}" ></Button>
             <Button  Margin="10" Width="100" Name="btnNextScreen" Click="btnNextScreen_Click" Content="{iconPacks:Modern Kind=ArrowRight}"></Button>
         </StackPanel>
+        <TextBlock Grid.Row="2" Name="txbInfo" HorizontalAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="14" >Info</TextBlock>
     </Grid>
 </Controls:MetroWindow>

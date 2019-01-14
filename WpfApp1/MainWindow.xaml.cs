@@ -61,13 +61,12 @@ namespace WpfApp1
         {
             try
             {
-                var url = ((sender as Image).DataContext as Screenshot).Full; 
-  
+                var url = ((sender as Image).DataContext as Screenshot).Full;
 
 
+                
 
-                FullImgWindow wnd = new FullImgWindow();
-                wnd.AllScreens = currentScreens;
+                FullImgWindow wnd = new FullImgWindow(currentScreens,currentSession );
                 wnd.currentImage = ((sender as Image).DataContext as Screenshot).ID;
                 wnd.srcImage.Source = new BitmapImage(new Uri(url));
                 wnd.ShowDialog();
@@ -227,23 +226,25 @@ namespace WpfApp1
         }
 
         private ScreenshotSessionData currentScreens = null;
+        private ExamSession currentSession = null;
         private async void lbSessions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lbSessions.SelectedItem != null)
             {
                 try
                 {
+                    currentSession = null;
                     currentScreens = null;
                     lbScreens.ItemsSource = null;
-                    ExamSession currses = lbSessions.SelectedItem as ExamSession;
+                    currentSession = lbSessions.SelectedItem as ExamSession;
                     //TODO:txbCurrName.Text = "Student:" + currses.student + " [Status:" + currses.status + "]";
                     WebClient wc = new WebClient();
                     //
                     wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-                    var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currses.id}"));
+                    var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currentSession.id}"));
 
                     currentScreens = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
-
+                   
                     lbScreens.ItemsSource = currentScreens.Shots;
                 }
                 catch (Exception ex)

@@ -41,7 +41,7 @@ namespace WpfApp1
         }
         public static DateTime FromUnixTime(double unixTime)
         {
-            return epoch.AddSeconds(unixTime);
+            return epoch.AddSeconds(unixTime).AddHours(1); //+1 hour want iets werkt in zomeruur precies
         }
         private static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 

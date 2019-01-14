@@ -12,6 +12,8 @@ namespace WpfApp1
         public string Thumb { get; set; }
         public string Full { get; set; }
         public int ID { get; set; }
+        public DateTime TimeTaken { get; set; }
+
     }
     public class ScreenshotSessionData
     {
@@ -20,43 +22,41 @@ namespace WpfApp1
         public Exam exam { get; set; }
         public string[][] thumbnails { get; set; }
         private List<Screenshot> screenshots = null;
-        public  List<Screenshot> Shots
+        public List<Screenshot> Shots
         {
             get
             {
-                if(screenshots==null)
+                if (screenshots == null)
                 {
                     screenshots = new List<Screenshot>();
-                    var l  = thumbnails.SelectMany(T => T).ToList();
+                    var l = thumbnails.SelectMany(T => T).ToList();
                     int counter = 0;
                     foreach (var sc in l)
                     {
+                        string filename = sc.Replace("_thumb", string.Empty);
                         screenshots.Add(new Screenshot()
                         {
                             Thumb = $"{directory}\\{sc}",
-                            Full = $"{directory}\\{sc.Replace("_thumb", string.Empty)}",
-                            ID = counter
+                            Full = $"{directory}\\{filename}",
+                            ID = counter,
+                            TimeTaken = FromUnixTime(Convert.ToDouble(filename.Split('.')[0]))
                         });
                         counter++;
-                            
+
                     }
 
-                  //screenshots =  ProcessImages(screenshots);
+                    //screenshots =  ProcessImages(screenshots);
                 }
 
                 return screenshots;
             }
         }
 
-        //private async List<Screenshot> ProcessImages(List<Screenshot> screenshots)
-        //{
-        //    //Enkel check op laatste 2:
-        //    WebClient wc = new WebClient();
-        //    await wc.DownloadFileTaskAsync(new Uri(screenshots.Last().Thumb), "1.png");
-        //    await wc.DownloadFileTaskAsync(new Uri(screenshots[screenshots.Count-2].Thumb), "2.png");
-
-        //    return screenshots;
-        //}
+        public static DateTime FromUnixTime(double unixTime)
+        {
+            return epoch.AddSeconds(unixTime).AddHours(1); //+1 hour want iets werkt in zomeruur precies
+        }
+        private static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     }
 
     public class User
@@ -75,6 +75,7 @@ namespace WpfApp1
         public string name { get; set; }
         public string userid { get; set; }
         public string accessid { get; set; }
+
     }
 
 
