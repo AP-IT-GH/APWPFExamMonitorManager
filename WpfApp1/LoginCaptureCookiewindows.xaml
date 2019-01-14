@@ -22,9 +22,9 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Arial" FontSize="20" >AP Exam Monitor Manager</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">Gebruikersnaam:</TextBlock>
-        <TextBox Grid.Column="1" Grid.Row="1" Name="txbUser" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
+        <TextBox Controls:TextBoxHelper.ClearTextButton="True" Grid.Column="1" Grid.Row="1" Name="txbUser" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
         <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">Wachtwoord:</TextBlock>
-        <PasswordBox Grid.Column="1" Grid.Row="2" Name="txbPass" HorizontalAlignment="Stretch" VerticalAlignment="Center"></PasswordBox>
+        <PasswordBox  Grid.Column="1" Grid.Row="2" Name="txbPass" HorizontalAlignment="Stretch" VerticalAlignment="Center"></PasswordBox>
         <CheckBox Grid.Row="3" Grid.ColumnSpan="2" Name="chkSafePW" HorizontalAlignment="Center">Bewaar gegevens</CheckBox>
         <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Name="btnLogin" Click="btnLogin_Click">Inloggen</Button>
         <iconPacks:PackIconMaterial Name="iconLoad" Visibility="Hidden" Kind="ProgressDownload" Grid.Row="3"  HorizontalAlignment="Center" VerticalAlignment="Center" Spin="True" />

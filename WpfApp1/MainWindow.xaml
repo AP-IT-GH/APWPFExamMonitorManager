@@ -77,7 +77,15 @@
                     </ListBox>
                 </ScrollViewer>
             </Grid>
-            <ListBox Name="lbScreens" Grid.Column="1"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition ></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Margin="10"> 
+                    <TextBlock  Name="txbCurrentSession" HorizontalAlignment="Center" FontSize="16" TextDecorations="{x:Null}" FontWeight="Bold"></TextBlock>
+                </Grid>
+                <ListBox Grid.Row="1" Name="lbScreens"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"
                       VirtualizingPanel.IsContainerVirtualizable="True"
     VirtualizingPanel.IsVirtualizing="True"
     VirtualizingPanel.VirtualizationMode="Recycling"
@@ -85,33 +93,35 @@
                      ScrollViewer.IsDeferredScrollingEnabled="True"
     VirtualizingPanel.CacheLength="2,2"
                      >
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <!--<WrapPanel Orientation="Horizontal"/>-->
-                        <virt:VirtualizingWrapPanel></virt:VirtualizingWrapPanel>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition ></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock HorizontalAlignment="Right" Text="{Binding ShortTime}" FontSize="10"></TextBlock>
-                            <Grid Grid.Row="1" Background="LightBlue">
-                                <iconPacks:PackIconMaterial Kind="ProgressDownload" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <Image Source="{Binding Path=Thumb}" MaxWidth="300" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <!--<WrapPanel Orientation="Horizontal"/>-->
+                            <virt:VirtualizingWrapPanel></virt:VirtualizingWrapPanel>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock HorizontalAlignment="Right" Text="{Binding ShortTime}" FontSize="10"></TextBlock>
+                                <Grid Grid.Row="1" Background="LightBlue">
+                                    <iconPacks:PackIconMaterial Kind="ProgressDownload" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <Image Source="{Binding Path=Thumb}" MaxWidth="300" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
 
+
+                                </Grid>
 
                             </Grid>
-                             
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
 
-            </ListBox>
+                </ListBox>
 
+            </Grid>
+          
             <!--<Grid Grid.Column="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>

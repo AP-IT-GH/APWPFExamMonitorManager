@@ -49,7 +49,7 @@ namespace WpfApp1
             }
             catch (Exception exc)
             {
-                await this.ShowMessageAsync("Error", exc.Message);
+                await this.ShowMessageAsync("Error bij RefreshDataFromServer", exc.Message);
             }
 
         }
@@ -74,7 +74,7 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
+                await this.ShowMessageAsync("Error bij Image_MouseLeftButtonUp", "Error=" + ex.Message);
             }
 
         }
@@ -105,7 +105,7 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
+                await this.ShowMessageAsync("Error bij btnCloseSession_Click", "Error=" + ex.Message);
             }
             RefreshDataFromServer();
             timerRefresh.Start();
@@ -119,16 +119,16 @@ namespace WpfApp1
 
                 WebClient wc = new WebClient();
                 wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-
+                ((sender as Button).Parent as FrameworkElement).IsEnabled = false;
+                ((sender as Button).Parent as Grid).Background = new SolidColorBrush(Colors.DarkGray);
                 await RestClient.CloseSession(currses.id);
-                ((sender as Button).Parent as StackPanel).IsEnabled = false;
-                ((sender as Button).Parent as StackPanel).Background = new SolidColorBrush(Colors.DarkGray);
+                
                 lbSessions.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
 
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Sessie close failed. Error=" + ex.Message);
+                await this.ShowMessageAsync("Error bij CloseSession", "Sessie close failed. Error=" + ex.Message);
             }
 
             //
@@ -187,7 +187,7 @@ namespace WpfApp1
             catch (Exception ex)
             {
 
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", " Error=" + ex.Message);
+                await this.ShowMessageAsync("Error bij Window_Loaded", " Error=" + ex.Message);
             }
         }
 
@@ -246,10 +246,11 @@ namespace WpfApp1
                     currentScreens = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
                    
                     lbScreens.ItemsSource = currentScreens.Shots;
+                    txbCurrentSession.Text = currentSession.student + " [Status:" + currentSession.status + "]";
                 }
                 catch (Exception ex)
                 {
-                    await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
+                    await this.ShowMessageAsync("Error bij lbSessions_SelectionChanged ", "Error=" + ex.Message);
                 }
             }
         }
@@ -287,11 +288,14 @@ namespace WpfApp1
             timerRefresh.Stop();
             try
             {
+                lbScreens.ItemsSource = null;
+                lbSessions.SelectedIndex = -1;
+                txbCurrentSession.Text = "";
                 lbSessions.ItemsSource = FilterData();
             }
             catch (Exception ex)
             {
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
+                await this.ShowMessageAsync("Error bij FilterItemSourceOffline", "Error=" + ex.Message);
             }
             timerRefresh.Start();
         }
