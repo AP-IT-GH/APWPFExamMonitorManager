@@ -102,6 +102,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -134,6 +135,7 @@
     </Compile>
     <Compile Include="ScreenshotData.cs" />
     <Compile Include="Student.cs" />
+    <Compile Include="Tools\SecurePasswordVault.cs" />
     <Compile Include="Tools\VirtualizingWrapPanel.cs" />
     <Page Include="FullImgWindow.xaml">
       <SubType>Designer</SubType>
