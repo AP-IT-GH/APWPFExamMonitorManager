@@ -5,7 +5,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-     
+     xmlns:virt="clr-namespace:WpfApp1.Tools"
         xmlns:local="clr-namespace:WpfApp1"
                     
         mc:Ignorable="d"
@@ -58,27 +58,28 @@
                 </ListBox>
             </ScrollViewer>
 
+            <ListBox Name="lbScreens" Grid.Column="1"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      VirtualizingPanel.IsContainerVirtualizable="True"
+    VirtualizingPanel.IsVirtualizing="True"
+    VirtualizingPanel.VirtualizationMode="Recycling"
+    VirtualizingPanel.CacheLengthUnit="Page"
+                     ScrollViewer.IsDeferredScrollingEnabled="True"
+    VirtualizingPanel.CacheLength="2,2"
+                     >
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <!--<WrapPanel Orientation="Horizontal"/>-->
+                        <virt:VirtualizingWrapPanel></virt:VirtualizingWrapPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding Thumb}" MaxWidth="300" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
 
+            </ListBox>
 
-
-
-
-            
-                <ListBox Name="lbScreens" Grid.Column="1"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
-
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding Thumb}" MaxWidth="200" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-
-                </ListBox>
-            
             <!--<Grid Grid.Column="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>

@@ -36,7 +36,7 @@ namespace WpfApp1
 
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //Todo: button bestaat niet meer. wordt nu gewoon bij onloaded gestart
             try
             {
                 RefreshData();
@@ -173,8 +173,8 @@ namespace WpfApp1
                     currCookiesession = Properties.Settings.Default.cookieSessionValue;
                 }
 
-                timerRefresh.IsEnabled = false;
-                timerRefresh.Interval = new TimeSpan(0, 0, 30);
+               
+                timerRefresh.Interval = new TimeSpan(0, 0, 15);
                 timerRefresh.Tick += (p, ex) => { RefreshData(); };
                 DownloadButton_Click(this, null);
             }
@@ -241,7 +241,7 @@ namespace WpfApp1
             {
                 try
                 {
-
+                    lbScreens.ItemsSource = null;
                     ExamSession currses = lbSessions.SelectedItem as ExamSession;
                     //TODO:txbCurrName.Text = "Student:" + currses.student + " [Status:" + currses.status + "]";
                     WebClient wc = new WebClient();
