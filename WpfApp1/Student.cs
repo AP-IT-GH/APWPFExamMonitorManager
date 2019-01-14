@@ -22,7 +22,7 @@ namespace WpfApp1
           get
             {
                 if (IsMissing) return "Red";
-                return "Green";
+                return "LightGreen";
             }
         }
 

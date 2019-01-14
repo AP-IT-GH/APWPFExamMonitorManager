@@ -25,7 +25,7 @@ namespace WpfApp1
             {
                 switch (status)
                 {
-                    case "Actief": return "Green";
+                    case "Actief": return "LightGreen";
                     case "Time-out": return "Orange";
                 }
                 return "White";
@@ -52,7 +52,7 @@ namespace WpfApp1
         {
             get
             {
-                return $"[Lector:{lector}, Examen:{exam}, Starttijd:{starttime}]";
+                return $"[Lector:{lector}, Examen:{exam}]";
             }
         }
 
