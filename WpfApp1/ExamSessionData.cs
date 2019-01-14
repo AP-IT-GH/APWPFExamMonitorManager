@@ -32,6 +32,19 @@ namespace WpfApp1
             }
         }
 
+        public DateTime StartTime
+        {
+            get
+            {
+                return FromUnixTime(Convert.ToDouble(starttime));
+            }
+        }
+        public static DateTime FromUnixTime(double unixTime)
+        {
+            return epoch.AddSeconds(unixTime);
+        }
+        private static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         public string OrderName
         {
             get
@@ -52,7 +65,7 @@ namespace WpfApp1
         {
             get
             {
-                return $"[Lector:{lector}, Examen:{exam}]";
+                return $"[Lector:{lector}, Examen:{exam}, Starttijd:{StartTime}]";
             }
         }
 
