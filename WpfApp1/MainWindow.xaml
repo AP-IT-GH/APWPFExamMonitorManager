@@ -74,7 +74,10 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Thumb}" MaxWidth="300" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+                        <Grid>
+                            <iconPacks:PackIconMaterial Kind="ProgressDownload" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Image Source="{Binding Path=Thumb}" MaxWidth="300" MouseLeftButtonUp="Image_MouseLeftButtonUp"></Image>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 
