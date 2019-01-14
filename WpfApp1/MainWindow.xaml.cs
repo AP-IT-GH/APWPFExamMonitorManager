@@ -61,8 +61,14 @@ namespace WpfApp1
         {
             try
             {
-                var url = ((sender as Image).DataContext as Screenshot).Full;
+                var url = ((sender as Image).DataContext as Screenshot).Full; 
+  
+
+
+
                 FullImgWindow wnd = new FullImgWindow();
+                wnd.AllScreens = currentScreens;
+                wnd.currentImage = ((sender as Image).DataContext as Screenshot).ID;
                 wnd.srcImage.Source = new BitmapImage(new Uri(url));
                 wnd.ShowDialog();
             }
@@ -115,7 +121,7 @@ namespace WpfApp1
                 WebClient wc = new WebClient();
                 wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
 
-                RestClient.CloseSession(currses.id);
+                await RestClient.CloseSession(currses.id);
                 ((sender as Button).Parent as StackPanel).IsEnabled = false;
                 ((sender as Button).Parent as StackPanel).Background = new SolidColorBrush(Colors.DarkGray);
                 lbSessions.SelectedIndex = -1;
@@ -156,16 +162,6 @@ namespace WpfApp1
             try
             {
                 txbStudFulter.TextChanged += TextBox_TextChanged;
-
-                //var time = DateTime.Now.Subtract(Properties.Settings.Default.cookieCreateTime);
-                //if (time.Days == 0 && time.Hours == 0 && time.Minutes < 55)
-                //{
-                //    // MessageBox.Show("We can use the cookie again");
-                //    // currCookiesession = Properties.Settings.Default.cookieSessionValue;
-                //}
-                //else
-                //{
-                //Eerst login proberen met bestaande gegevens
                 if (Properties.Settings.Default.SafePW == true)
                 {
                     string user = Properties.Settings.Default.UserName;
@@ -230,12 +226,14 @@ namespace WpfApp1
             wnd.ShowDialog();
         }
 
+        private ScreenshotSessionData currentScreens = null;
         private async void lbSessions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lbSessions.SelectedItem != null)
             {
                 try
                 {
+                    currentScreens = null;
                     lbScreens.ItemsSource = null;
                     ExamSession currses = lbSessions.SelectedItem as ExamSession;
                     //TODO:txbCurrName.Text = "Student:" + currses.student + " [Status:" + currses.status + "]";
@@ -244,9 +242,9 @@ namespace WpfApp1
                     wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
                     var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currses.id}"));
 
-                    var screendat = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
+                    currentScreens = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
 
-                    lbScreens.ItemsSource = screendat.Shots;
+                    lbScreens.ItemsSource = currentScreens.Shots;
                 }
                 catch (Exception ex)
                 {

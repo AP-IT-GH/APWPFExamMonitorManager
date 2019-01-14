@@ -19,6 +19,8 @@ namespace WpfApp1
     /// </summary>
     public partial class FullImgWindow : MahApps.Metro.Controls.MetroWindow
     {
+        public ScreenshotSessionData AllScreens { get; set; }
+        public int currentImage = -1;
         public FullImgWindow()
         {
             InitializeComponent();
@@ -29,6 +31,46 @@ namespace WpfApp1
             this.Close();
         }
 
- 
+        private void btnPreviousScreen_Click(object sender, RoutedEventArgs e)
+        {
+            currentImage--;
+            srcImage.Source = new BitmapImage(new Uri(AllScreens.Shots[currentImage].Full));
+            if (currentImage>0)
+            {
+              
+                btnNextScreen.IsEnabled = true;
+            }
+            else
+            {
+                btnPreviousScreen.IsEnabled = false;
+            }
+        }
+
+        private void btnNextScreen_Click(object sender, RoutedEventArgs e)
+        {
+            currentImage++;
+            srcImage.Source = new BitmapImage(new Uri(AllScreens.Shots[currentImage].Full));
+            if (currentImage < AllScreens.Shots.Count-1 )
+            {
+               
+                btnPreviousScreen.IsEnabled = true;
+            }
+            else
+            {
+                btnNextScreen.IsEnabled = false;
+            }
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(currentImage==0)
+            {
+                btnPreviousScreen.IsEnabled = false;
+            }
+            if(currentImage== AllScreens.Shots.Count-1)
+            {
+                btnNextScreen.IsEnabled = false;
+            }
+        }
     }
 }

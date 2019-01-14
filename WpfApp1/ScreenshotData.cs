@@ -11,6 +11,7 @@ namespace WpfApp1
     {
         public string Thumb { get; set; }
         public string Full { get; set; }
+        public int ID { get; set; }
     }
     public class ScreenshotSessionData
     {
@@ -27,13 +28,16 @@ namespace WpfApp1
                 {
                     screenshots = new List<Screenshot>();
                     var l  = thumbnails.SelectMany(T => T).ToList();
+                    int counter = 0;
                     foreach (var sc in l)
                     {
                         screenshots.Add(new Screenshot()
                         {
                             Thumb = $"{directory}\\{sc}",
-                            Full = $"{directory}\\{sc.Replace("_thumb",string.Empty)}"
+                            Full = $"{directory}\\{sc.Replace("_thumb", string.Empty)}",
+                            ID = counter
                         });
+                        counter++;
                             
                     }
 

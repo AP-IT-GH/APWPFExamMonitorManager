@@ -7,10 +7,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Full image viewer (click image to close)" Height="800" MouseLeftButtonUp="Grid_MouseLeftButtonUp" Width="800" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None" WindowState="Maximized" >
+        Title="Full image viewer (click image to close)" Height="800" MouseLeftButtonUp="Grid_MouseLeftButtonUp" Width="800" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None" WindowState="Maximized" Loaded="MetroWindow_Loaded" >
     <Grid MouseLeftButtonUp="Grid_MouseLeftButtonUp">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
         <TextBlock Text="Loading" HorizontalAlignment="Center" FontSize="36" Margin="150" />
         <iconPacks:PackIconMaterial Kind="ProgressDownload"  Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Spin="True" />
         <Image Name="srcImage" ></Image>
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
+            <Button Name="btnPreviousScreen" Click="btnPreviousScreen_Click" >Prev</Button>
+            <Button Name="btnNextScreen" Click="btnNextScreen_Click">Next</Button>
+        </StackPanel>
     </Grid>
 </Controls:MetroWindow>
