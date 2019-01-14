@@ -10,42 +10,64 @@ namespace WpfApp1.Tools
 {
     class RestClient
     {
-        public static async Task<bool> LoginAndGetSession(string username, string pass, HttpClient client)
-        {
+        public static HttpClient Client;
+        private static  string mainusername = "";
+        private static string mainpassword = "";
 
+
+        public static async void ReLogin()
+        {
+            try
+            {
+                await LoginAndGetSession(mainusername, mainpassword);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("Relogin failed");
+            }
+        }
+
+            public static async Task<bool> LoginAndGetSession(string username, string pass)
+        {
+            Client = new HttpClient();
             string test = "{\"username\":\"" + username + "\",\"password\":\"" + pass + "\"}";
             var buffer = System.Text.Encoding.UTF8.GetBytes(test);
             var byteContent = new ByteArrayContent(buffer);
-            var response = await client.PostAsync("http://examonitoring.ap.be/api/users/checkUser", byteContent);
+            var response = await Client.PostAsync("http://examonitoring.ap.be/api/users/checkUser", byteContent);
 
             string result = await response.Content.ReadAsStringAsync();
             if (result.ToLower().Contains("false"))
             {
-                MessageBox.Show("wrong credentials");
+                //MessageBox.Show("wrong credentials");
                 return false;
             }
             else
             {
-                bool gotcookie = await TrySetSessionCookie(client, response);
+                bool gotcookie = await TrySetSessionCookie(response);
+                mainusername = username;
+                mainpassword = pass;
                 return gotcookie;
             }
-            
+
         }
 
-        public static async Task GetActiveSessions(HttpClient client)
+        public static async Task GetActiveSessions()
         {
-            var authc = await client.GetStringAsync("http://examonitoring.ap.be/api/users/authCheck");
+            var authc = await Client.GetStringAsync("http://examonitoring.ap.be/api/users/authCheck");
             if (authc.Contains("true"))
 
             {
-                var res3 = await client.GetStringAsync(new Uri("http://examonitoring.ap.be/api/sessions/getActiveSessions"));
+                var res3 = await Client.GetStringAsync(new Uri("http://examonitoring.ap.be/api/sessions/getActiveSessions"));
                 MessageBox.Show(res3);
             }
             else
-                MessageBox.Show("Not logged in anymore");
+            {
+                //Retry login
+                ReLogin();
+            }
         }
 
-        public static async Task<bool> TrySetSessionCookie(HttpClient client, HttpResponseMessage response)
+        public static async Task<bool> TrySetSessionCookie(HttpResponseMessage response)
         {
             try
             {
@@ -57,7 +79,7 @@ namespace WpfApp1.Tools
                 string cookie = res1.Split(';')[0].Split('=').Last();
 
 
-                client.DefaultRequestHeaders.Add("Cookie", $"ci_session={cookie}");
+                Client.DefaultRequestHeaders.Add("Cookie", $"ci_session={cookie}");
                 return true;
             }
             catch (Exception)

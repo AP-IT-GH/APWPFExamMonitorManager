@@ -48,16 +48,8 @@ namespace WpfApp1
 
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            HttpClient client = new HttpClient();
-
-            //userlogin
-            bool result = await RestClient.LoginAndGetSession(txbUser.Text, txbPass.Password, client);
-            if (result == true)
-            {
-                MessageBox.Show("Gelukt");
-                //close en return client?
-            }
-
+            iconLoad.Visibility = Visibility.Visible;
+            btnLogin.IsEnabled = false;
             if (chkSafePW.IsChecked == true)
             {
                 Properties.Settings.Default.SafePW = true;
@@ -72,6 +64,20 @@ namespace WpfApp1
                 Properties.Settings.Default.Password = "";
                 Properties.Settings.Default.Save();
             }
+
+            //userlogin
+            bool result = await RestClient.LoginAndGetSession(txbUser.Text, txbPass.Password);
+            if (result == true)
+            {
+                MessageBox.Show("Gelukt");
+                //close en return client?
+            }
+            else
+            {
+                MessageBox.Show("Login mislukt. Kloppen je gegevens?");
+            }
+            iconLoad.Visibility = Visibility.Hidden;
+            btnLogin.IsEnabled = true;
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)

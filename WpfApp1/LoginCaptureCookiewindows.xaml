@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"  
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="Login" Height="200" Width="250" Loaded="MetroWindow_Loaded">
@@ -24,5 +25,6 @@
         <PasswordBox Grid.Column="1" Grid.Row="1" Name="txbPass" HorizontalAlignment="Stretch" VerticalAlignment="Center"></PasswordBox>
         <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Name="chkSafePW" HorizontalAlignment="Center">Bewaar gegevens</CheckBox>
         <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Name="btnLogin" Click="btnLogin_Click">Inloggen</Button>
+        <iconPacks:PackIconMaterial Name="iconLoad" Visibility="Hidden" Kind="ProgressDownload" Grid.Row="3"  HorizontalAlignment="Center" VerticalAlignment="Center" Spin="True" />
     </Grid>
 </Controls:MetroWindow>
