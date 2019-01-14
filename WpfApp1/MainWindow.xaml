@@ -10,7 +10,7 @@
                     
         mc:Ignorable="d"
         Title="MainWindow" Height="792.013" Width="1621.637" Loaded="Window_Loaded" WindowState="Maximized" WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Grid MouseLeftButtonUp="Grid_MouseLeftButtonUp">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -40,7 +40,15 @@
                 <!--<ColumnDefinition Width="4*"/>-->
 
             </Grid.ColumnDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Grid.Column="0">
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Background="LightBlue">
+                    <CheckBox Name="chkOnlyTimeOuts" Content="Toon enkel timeouts" Margin="5" Checked="chkOnlyTimeOuts_Checked" Unchecked="chkOnlyTimeOuts_Checked" ></CheckBox>
+                </StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Grid.Row="1">
                 <ListBox Name="lbSessions" SelectionChanged="lbSessions_SelectionChanged"   >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -57,7 +65,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </ScrollViewer>
-
+            </Grid>
             <ListBox Name="lbScreens" Grid.Column="1"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"
                       VirtualizingPanel.IsContainerVirtualizable="True"
     VirtualizingPanel.IsVirtualizing="True"

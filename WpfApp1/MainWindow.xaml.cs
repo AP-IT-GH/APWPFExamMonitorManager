@@ -39,6 +39,7 @@ namespace WpfApp1
             //Todo: button bestaat niet meer. wordt nu gewoon bij onloaded gestart
             try
             {
+                timerRefresh.Stop();
                 RefreshData();
 
                 timerRefresh.IsEnabled = true;
@@ -116,40 +117,30 @@ namespace WpfApp1
 
                 await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Sessie close failed. Error=" + ex.Message);
             }
-            
+
             //
-          
+
         }
 
         private async void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            timerRefresh.Stop();
-            try
-            {
-                if (txbStudFulter.Text != "")
-                    lbSessions.ItemsSource = FilterData().Where(p => p.student.ToLower().Contains(txbStudFulter.Text.ToLower()));
-                else
-                {
-                    IEnumerable<ExamSession> f = FilterData();
-                    lbSessions.ItemsSource = f;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
-            }
-            timerRefresh.Start();
+            await FilterItemSourceOffline();
 
         }
 
         private IEnumerable<ExamSession> FilterData()
         {
+            var resul = allsessions as IEnumerable<ExamSession>;
+            if (txbStudFulter.Text != "")
+                resul = resul.Where(p => p.student.ToLower().Contains(txbStudFulter.Text.ToLower()));
             if (txbLectorFilter.Text != "")
-                return allsessions.OrderBy(p => p.OrderName).Where(p => p.lector.ToLower().Contains(txbLectorFilter.Text.ToLower()) || p.exam.ToLower().Contains(txbLectorFilter.Text.ToLower()));
+                resul = resul.Where(p => p.lector.ToLower().Contains(txbLectorFilter.Text.ToLower()) || p.exam.ToLower().Contains(txbLectorFilter.Text.ToLower()));
+            if (chkOnlyTimeOuts.IsChecked == true)
+                resul = resul.Where(p => p.status == "Time-out");
 
-            else
-                return allsessions.OrderBy(p => p.OrderName);
+
+
+            return resul.OrderBy(p => p.OrderName);
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -173,7 +164,7 @@ namespace WpfApp1
                     currCookiesession = Properties.Settings.Default.cookieSessionValue;
                 }
 
-               
+
                 timerRefresh.Interval = new TimeSpan(0, 0, 15);
                 timerRefresh.Tick += (p, ex) => { RefreshData(); };
                 DownloadButton_Click(this, null);
@@ -196,7 +187,7 @@ namespace WpfApp1
                 var filterd = FilterData();
                 lbSessions.ItemsSource = filterd;
                 Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tLaatste update was om={DateTime.Now.TimeOfDay}";
-                CanvasAlert(filterd);
+
             }
             catch (Exception ex)
             {
@@ -205,12 +196,7 @@ namespace WpfApp1
             }
         }
 
-        private void CanvasAlert(IEnumerable<ExamSession> filterd)
-        {
-            //if (filterd.Count(p => p.status == "Time-out") > 0)
-            //    cnvTimeMout.Visibility = Visibility.Visible;
-            //else cnvTimeMout.Visibility = Visibility.Collapsed;
-        }
+
 
         private void btnDebug_Click(object sender, RoutedEventArgs e)
         {
@@ -262,29 +248,13 @@ namespace WpfApp1
 
         private async void txbLectorFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            timerRefresh.Stop();
-            try
-            {
-                if (txbStudFulter.Text != "")
-                    lbSessions.ItemsSource = FilterData().OrderBy(p => p.OrderName).Where(p => p.lector.ToLower().Contains(txbLectorFilter.Text.ToLower()) || p.exam.ToLower().Contains(txbLectorFilter.Text.ToLower()));
-                else
-                {
-                    IEnumerable<ExamSession> f = FilterData();
-                    lbSessions.ItemsSource = f;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
-            }
-            timerRefresh.Start();
+            await FilterItemSourceOffline();
         }
 
         private async void btnInfo_Click(object sender, RoutedEventArgs e)
         {
 
-            string url= "https://github.com/AP-Elektronica-ICT/APWPFExamMonitorManager";
+            string url = "https://github.com/AP-Elektronica-ICT/APWPFExamMonitorManager";
             string version = "debug/onbekend";
             try
             {
@@ -294,9 +264,33 @@ namespace WpfApp1
             {
                 //ifgnore
             }
-             
+
             string fulltekst = $"Versie:{version}.\r\nDit programma is geschreven door Tim Dams, AP Hogeschool Antwerpen (2019).\r\n Contacteer me bij vragen of opmerkingen. \r\n\r\nDe volledige broncode van dit programma kan op github bekeken worden: {url}";
             await this.ShowMessageAsync("Over dit programma", fulltekst);
+        }
+
+        private async void chkOnlyTimeOuts_Checked(object sender, RoutedEventArgs e)
+        {
+            await FilterItemSourceOffline();
+        }
+
+        private async Task FilterItemSourceOffline()
+        {
+            timerRefresh.Stop();
+            try
+            {
+                lbSessions.ItemsSource = FilterData();
+            }
+            catch (Exception ex)
+            {
+                await this.ShowMessageAsync("BAM.KAPOT. Niet goed.", "Error=" + ex.Message);
+            }
+            timerRefresh.Start();
+        }
+
+        private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            DownloadButton_Click(this, null);
         }
     }
 }
