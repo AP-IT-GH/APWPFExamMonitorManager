@@ -154,7 +154,7 @@ namespace WpfApp1
                 if (time.Days == 0 && time.Hours == 0 && time.Minutes < 55)
                 {
                     // MessageBox.Show("We can use the cookie again");
-                    currCookiesession = Properties.Settings.Default.cookieSessionValue;
+                   // currCookiesession = Properties.Settings.Default.cookieSessionValue;
                 }
                 else
                 {
@@ -162,7 +162,7 @@ namespace WpfApp1
                     this.Visibility = Visibility.Hidden;
                     wnd.ShowDialog();
                     this.Visibility = Visibility.Visible;
-                    currCookiesession = Properties.Settings.Default.cookieSessionValue;
+                   // currCookiesession = Properties.Settings.Default.cookieSessionValue;
                 }
 
 

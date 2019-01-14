@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="ScreenshotData.cs" />
     <Compile Include="Student.cs" />
+    <Compile Include="Tools\RestClient.cs" />
     <Compile Include="Tools\SecurePasswordVault.cs" />
     <Compile Include="Tools\VirtualizingWrapPanel.cs" />
     <Page Include="FullImgWindow.xaml">
