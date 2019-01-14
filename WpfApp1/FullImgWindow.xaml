@@ -18,8 +18,8 @@
         <Image Name="srcImage" ></Image>
 
         <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
-            <Button Name="btnPreviousScreen" Click="btnPreviousScreen_Click" >Prev</Button>
-            <Button Name="btnNextScreen" Click="btnNextScreen_Click">Next</Button>
+            <Button Margin="10" Height="50" Width="100" Name="btnPreviousScreen" Click="btnPreviousScreen_Click"  Content="{iconPacks:Modern Kind=ArrowLeft}" ></Button>
+            <Button  Margin="10" Width="100" Name="btnNextScreen" Click="btnNextScreen_Click" Content="{iconPacks:Modern Kind=ArrowRight}"></Button>
         </StackPanel>
     </Grid>
 </Controls:MetroWindow>
