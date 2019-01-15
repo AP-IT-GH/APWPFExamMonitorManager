@@ -87,14 +87,18 @@ namespace WpfApp1
             try
             {
                 timerRefresh.Stop();
+                ExamSession currses = (sender as Button).DataContext as ExamSession;
 
+                ((sender as Button).Parent as FrameworkElement).IsEnabled = false;
+                ((sender as Button).Parent as Grid).Background = new SolidColorBrush(Colors.DarkGray);
                 if (chkAskConfirm.IsChecked == true)
                 {
-                    if (await this.ShowMessageAsync("Opgelet", "Zeker dat je deze sessie wenst af te sluiten?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+
+                    if (await this.ShowMessageAsync("Opgelet", $"Zeker dat je  sessie van {currses.OrderName} wenst af te sluiten?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         lbSessions.SelectedIndex = -1;
                         lbScreens.ItemsSource = null;
-                        await CloseSession(sender);
+                        await CloseSession(currses);
 
                     }
                 }
@@ -102,7 +106,7 @@ namespace WpfApp1
                 {
                     lbSessions.SelectedIndex = -1;
                     lbScreens.ItemsSource = null;
-                    await CloseSession(sender);
+                    await CloseSession(currses);
                 }
             }
             catch (Exception ex)
@@ -114,14 +118,11 @@ namespace WpfApp1
             timerRefresh.Start();
         }
 
-        private async Task CloseSession(object sender)
+        private async Task CloseSession(ExamSession currses)
         {
             try
             {
-                ExamSession currses = (sender as Button).DataContext as ExamSession;
-
-                ((sender as Button).Parent as FrameworkElement).IsEnabled = false;
-                ((sender as Button).Parent as Grid).Background = new SolidColorBrush(Colors.DarkGray);
+          
                 await RestClient.CloseSession(currses.id);
 
                 lbSessions.SelectedIndex = -1;
