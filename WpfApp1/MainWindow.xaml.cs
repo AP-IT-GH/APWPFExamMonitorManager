@@ -70,7 +70,9 @@ namespace WpfApp1
                 FullImgWindow wnd = new FullImgWindow(currentScreens, currentSession);
                 wnd.currentImage = ((sender as Image).DataContext as Screenshot).ID;
                 wnd.srcImage.Source = new BitmapImage(new Uri(url));
+               //TODO:te traag this.Visibility = Visibility.Hidden;
                 wnd.ShowDialog();
+                //TODO this.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {

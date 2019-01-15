@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Full image viewer (click image to close)" Height="800" MouseLeftButtonUp="Grid_MouseLeftButtonUp" Width="800" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None" WindowState="Maximized" Loaded="MetroWindow_Loaded" >
+        Title="Full image viewer (click image to close)" Height="800" MouseLeftButtonUp="Grid_MouseLeftButtonUp" Width="800" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None" WindowState="Maximized" Loaded="MetroWindow_Loaded" KeyUp="MetroWindow_KeyUp" >
     <Grid >
         <Grid.RowDefinitions>
            

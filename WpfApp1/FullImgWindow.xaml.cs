@@ -92,6 +92,20 @@ namespace WpfApp1
             txbInfo.Text = $"Gebruiker: {allScreens.user.lastname} {allScreens.user.firstname}. Screenshot genomen om: {allScreens.Shots[currentImage].TimeTaken}";
         }
 
-     
+        private void MetroWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch(e.Key)
+            {
+                case Key.Left:
+                    btnPreviousScreen_Click(this, null);
+                    break;
+                case Key.Right:
+                    btnNextScreen_Click(this, null);
+                    break;
+                case Key.Escape:
+                    this.Close();
+                    break;
+            }
+        }
     }
 }
