@@ -26,6 +26,7 @@ namespace WpfApp1
 
         
         DispatcherTimer timerRefresh = new DispatcherTimer();
+        private DateTime lastUpdate;
         public MainWindow()
         {
             InitializeComponent();
@@ -42,7 +43,7 @@ namespace WpfApp1
             {
                 timerRefresh.Stop();
                 DownloadActiveSessions();
-
+                lastUpdate = DateTime.Now;
 
                 timerRefresh.Start();
 
@@ -150,7 +151,7 @@ namespace WpfApp1
                 resul = resul.Where(p => p.status == "Time-out");
 
 
-
+            Title = $"SESSIONS={resul.Count().ToString()} \t  TIMEMOUT={resul.Where(p => p.status == "Time-out").Count()}   \t\tLaatste update was om={lastUpdate.ToString("HH:mm:ss")}";
             return resul.OrderBy(p => p.OrderName);
         }
 
@@ -197,7 +198,7 @@ namespace WpfApp1
                 allsessions = JsonConvert.DeserializeObject<List<ExamSession>>(res);
                 var filterd = FilterData();
                 lbSessions.ItemsSource = filterd;
-                Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tLaatste update was om={DateTime.Now.ToString("HH:mm:ss")}";
+                //Title = $"SESSIONS={filterd.Count().ToString()} \t  TIMEMOUT={filterd.Where(p => p.status == "Time-out").Count()}   \t\tLaatste update was om={DateTime.Now.ToString("HH:mm:ss")}";
 
             }
             catch (Exception ex)

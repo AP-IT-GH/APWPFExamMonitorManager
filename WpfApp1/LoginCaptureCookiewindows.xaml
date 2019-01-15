@@ -22,7 +22,7 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Arial" FontSize="20" >AP Exam Monitor Manager</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">Gebruikersnaam:</TextBlock>
-        <TextBox Controls:TextBoxHelper.ClearTextButton="True" Grid.Column="1" Grid.Row="1" Name="txbUser" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
+        <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="pxxxxx@ap.be" Grid.Column="1" Grid.Row="1" Name="txbUser" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>
         <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">Wachtwoord:</TextBlock>
         <PasswordBox  Grid.Column="1" Grid.Row="2" Name="txbPass" HorizontalAlignment="Stretch" VerticalAlignment="Center"></PasswordBox>
         <CheckBox Grid.Row="3" Grid.ColumnSpan="2" Name="chkSafePW" HorizontalAlignment="Center">Bewaar gegevens</CheckBox>
