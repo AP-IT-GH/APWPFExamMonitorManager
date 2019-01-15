@@ -58,7 +58,7 @@
                                         <ColumnDefinition Width="Auto" ></ColumnDefinition>
                                         <ColumnDefinition></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" HorizontalAlignment="Left" Margin="2" Name="btnCloseSession" Click="btnCloseSession_Click" 
+                                    <Button Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Grid.Column="0" HorizontalAlignment="Left" Margin="2" Name="btnCloseSession" Click="btnCloseSession_Click" 
                                         Content="{iconPacks:Modern Kind=Close}"/>
                                     <StackPanel Grid.Column="1" Orientation="Vertical"  >
 
