@@ -11,7 +11,7 @@ namespace WpfApp1.Tools
     class RestClient
     {
         public static HttpClient Client;
-        private static  string mainusername = "";
+        private static string mainusername = "";
         private static string mainpassword = "";
         private static bool IAMIN = false;
 
@@ -21,13 +21,13 @@ namespace WpfApp1.Tools
             {
                 await LoginAndGetSession(mainusername, mainpassword);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                MessageBox.Show("Relogin failed");
+                MessageBox.Show("Relogin failed."+ e.Message);
             }
         }
 
-            public static async Task<bool> LoginAndGetSession(string username, string pass)
+        public static async Task<bool> LoginAndGetSession(string username, string pass)
         {
             Client = new HttpClient();
             string test = "{\"username\":\"" + username + "\",\"password\":\"" + pass + "\"}";
@@ -59,7 +59,7 @@ namespace WpfApp1.Tools
             {
                 var res3 = await Client.GetStringAsync(new Uri("http://examonitoring.ap.be/api/sessions/getActiveSessions"));
                 return res3;
-                MessageBox.Show(res3);
+
             }
             else
             {
@@ -72,9 +72,15 @@ namespace WpfApp1.Tools
 
         public static async Task CloseSession(string id)
         {
-            
+
 
             var res = await Client.GetStringAsync(new Uri($"http://examonitoring.ap.be/api/sessions/finishSession/{id}"));
+        }
+
+        public static async Task<string> GetScreenshotFromSession(string id)
+        {
+            var res = await Client.GetStringAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{id}"));
+            return res;
         }
 
         public static async Task<bool> TrySetSessionCookie(HttpResponseMessage response)

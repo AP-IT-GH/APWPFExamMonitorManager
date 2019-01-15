@@ -24,7 +24,7 @@ namespace WpfApp1
     public partial class MainWindow : MetroWindow
     {
 
-        private string currCookiesession = "";
+        
         DispatcherTimer timerRefresh = new DispatcherTimer();
         public MainWindow()
         {
@@ -64,9 +64,9 @@ namespace WpfApp1
                 var url = ((sender as Image).DataContext as Screenshot).Full;
 
 
-                
 
-                FullImgWindow wnd = new FullImgWindow(currentScreens,currentSession );
+
+                FullImgWindow wnd = new FullImgWindow(currentScreens, currentSession);
                 wnd.currentImage = ((sender as Image).DataContext as Screenshot).ID;
                 wnd.srcImage.Source = new BitmapImage(new Uri(url));
                 wnd.ShowDialog();
@@ -117,12 +117,10 @@ namespace WpfApp1
             {
                 ExamSession currses = (sender as Button).DataContext as ExamSession;
 
-                WebClient wc = new WebClient();
-                wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
                 ((sender as Button).Parent as FrameworkElement).IsEnabled = false;
                 ((sender as Button).Parent as Grid).Background = new SolidColorBrush(Colors.DarkGray);
                 await RestClient.CloseSession(currses.id);
-                
+
                 lbSessions.SelectedIndex = -1;
             }
             catch (Exception ex)
@@ -166,7 +164,7 @@ namespace WpfApp1
                     string user = Properties.Settings.Default.UserName;
                     string pass = SecurePasswordVault.ToInsecureString(SecurePasswordVault.DecryptString(Properties.Settings.Default.Password));
                     var gotit = await RestClient.LoginAndGetSession(user, pass);
-                    if(gotit!=true) //Login vereist
+                    if (gotit != true) //Login vereist
                     {
                         LoadLoginAndQuitIfNeeded();
                     }
@@ -195,8 +193,6 @@ namespace WpfApp1
         {
             try
             {
-                WebClient wc = new WebClient();
-                wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
                 var res = await RestClient.GetActiveSessions();
                 allsessions = JsonConvert.DeserializeObject<List<ExamSession>>(res);
                 var filterd = FilterData();
@@ -206,7 +202,7 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-              //  await this.ShowMessageAsync("Error", ex.Message);
+                //  await this.ShowMessageAsync("Error", ex.Message);
 
             }
         }
@@ -238,14 +234,11 @@ namespace WpfApp1
                     txbCurrentSession.Text = "";
                     lbScreens.ItemsSource = null;
                     currentSession = lbSessions.SelectedItem as ExamSession;
-                    //TODO:txbCurrName.Text = "Student:" + currses.student + " [Status:" + currses.status + "]";
-                    WebClient wc = new WebClient();
-                    //
-                    wc.Headers.Add(HttpRequestHeader.Cookie, $"ci_session={currCookiesession}");
-                    var res = await wc.DownloadStringTaskAsync(new Uri($"http://examonitoring.ap.be/api/sessions/getScreenshotList/{currentSession.id}"));
 
+                    var res =await  RestClient.GetScreenshotFromSession(currentSession.id);
+                    
                     currentScreens = JsonConvert.DeserializeObject<ScreenshotSessionData>(res);
-                   
+
                     lbScreens.ItemsSource = currentScreens.Shots;
                     txbCurrentSession.Text = currentSession.student + " [Status:" + currentSession.status + "]";
                 }
