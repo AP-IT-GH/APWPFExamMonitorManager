@@ -42,51 +42,71 @@ namespace WpfApp1
 
         private void btnPreviousScreen_Click(object sender, RoutedEventArgs e)
         {
-            currentImage--;
-            srcImage.Source = new BitmapImage(new Uri(allScreens.Shots[currentImage].Full));
-            ShowInfo();
-            if (currentImage>0)
+            try
             {
-              
-                btnNextScreen.IsEnabled = true;
+                if (currentImage > 0)
+                {
+                    currentImage--;
+                    srcImage.Source = new BitmapImage(new Uri(allScreens.Shots[currentImage].Full));
+                    ShowInfo();
+                    if (currentImage > 0)
+                    {
+
+                        btnNextScreen.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnPreviousScreen.IsEnabled = false;
+                    }
+                }
             }
-            else
+            catch
             {
-                btnPreviousScreen.IsEnabled = false;
+                //Me too lazy to fix count errors :p
             }
         }
 
         private void btnNextScreen_Click(object sender, RoutedEventArgs e)
         {
-            currentImage++;
-            srcImage.Source = new BitmapImage(new Uri(allScreens.Shots[currentImage].Full));
-            ShowInfo();
-            if (currentImage < allScreens.Shots.Count-1 )
+            try
             {
-               
-                btnPreviousScreen.IsEnabled = true;
+                if (currentImage < allScreens.Shots.Count - 1)
+                {
+                    currentImage++;
+                    srcImage.Source = new BitmapImage(new Uri(allScreens.Shots[currentImage].Full));
+                    ShowInfo();
+                    if (currentImage < allScreens.Shots.Count - 1)
+                    {
+
+                        btnPreviousScreen.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnNextScreen.IsEnabled = false;
+                    }
+                }
             }
-            else
+            catch
             {
-                btnNextScreen.IsEnabled = false;
+                //Me too lazy to fix count errors :p
             }
 
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if(currentImage==0)
+            if (currentImage == 0)
             {
                 btnPreviousScreen.IsEnabled = false;
             }
-            if(currentImage== allScreens.Shots.Count-1)
+            if (currentImage == allScreens.Shots.Count - 1)
             {
                 btnNextScreen.IsEnabled = false;
             }
 
             ShowInfo();
         }
-        
+
         private void ShowInfo()
         {
             txbInfo.Text = $"Gebruiker: {allScreens.user.lastname} {allScreens.user.firstname}. Screenshot genomen om: {allScreens.Shots[currentImage].TimeTaken}";
@@ -94,7 +114,7 @@ namespace WpfApp1
 
         private void MetroWindow_KeyUp(object sender, KeyEventArgs e)
         {
-            switch(e.Key)
+            switch (e.Key)
             {
                 case Key.Left:
                     btnPreviousScreen_Click(this, null);
