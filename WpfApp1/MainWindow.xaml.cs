@@ -235,6 +235,7 @@ namespace WpfApp1
                 {
                     currentSession = null;
                     currentScreens = null;
+                    txbCurrentSession.Text = "";
                     lbScreens.ItemsSource = null;
                     currentSession = lbSessions.SelectedItem as ExamSession;
                     //TODO:txbCurrName.Text = "Student:" + currses.student + " [Status:" + currses.status + "]";
